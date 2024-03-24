@@ -11,8 +11,6 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -24,11 +22,9 @@ import io.github.sceneview.math.Rotation
 import io.github.sceneview.node.ModelNode
 import io.github.sceneview.rememberCameraNode
 import io.github.sceneview.rememberEngine
-import io.github.sceneview.rememberEnvironmentLoader
 import io.github.sceneview.rememberModelLoader
 import io.github.sceneview.rememberNode
 import io.github.sceneview.rememberNodes
-import xd.jg.custom_figures.data.dto.ModelPartListDto
 import xd.jg.custom_figures.presentation.main_screen.MainScreenViewModel
 import xd.jg.custom_figures.utils.Resource
 import java.io.File
@@ -37,8 +33,6 @@ import kotlin.time.DurationUnit
 
 @Composable
 fun FullModelViewer(fraction: Float, mainScreenViewModel: MainScreenViewModel = hiltViewModel()) {
-    var currentModelPartsList: ModelPartListDto? = null
-    val photoWasMade by remember { mutableStateOf(mainScreenViewModel.mainScreenUIState.value.photoWasMade) }
     val downloadState by mainScreenViewModel.downloadStateFigure.collectAsState()
 
     val context = LocalContext.current
@@ -47,7 +41,6 @@ fun FullModelViewer(fraction: Float, mainScreenViewModel: MainScreenViewModel = 
         Box(modifier = Modifier.fillMaxHeight(fraction)) {
             val engine = rememberEngine()
             val modelLoader = rememberModelLoader(engine)
-            val environmentLoader = rememberEnvironmentLoader(engine)
 
             val cameraNode = rememberCameraNode(engine).apply {
                 position = Position(x = 0.0f, y = 0.5f, z = 1.25f)
@@ -63,29 +56,11 @@ fun FullModelViewer(fraction: Float, mainScreenViewModel: MainScreenViewModel = 
                 )
             )
 
-            var bodyNode = ModelNode(
-                modelInstance = modelLoader.createModelInstance(
-                    assetFileLocation = "models/cool_model.glb"
-                ),
-                scaleToUnits = 1.0f,
-                centerOrigin = Position(x = 0.0f, y = 0.25f, z = 0f),
-            )
+            var bodyNode: ModelNode
 
-            var hairNode = ModelNode(
-            modelInstance = modelLoader.createModelInstance(
-                assetFileLocation = "models/cool_model.glb"
-            ),
-                scaleToUnits = 1.0f,
-                centerOrigin = Position(x = 0.0f, y = 0.25f, z = 0f),
-            )
+            var hairNode: ModelNode
 
-            var eyesNode = ModelNode(
-                modelInstance = modelLoader.createModelInstance(
-                    assetFileLocation = "models/cool_model.glb"
-                ),
-                scaleToUnits = 1.0f,
-                centerOrigin = Position(x = 0.0f, y = 0.25f, z = 0f),
-            )
+            var eyesNode: ModelNode
 
             Scene(
                 engine = engine,
@@ -94,9 +69,7 @@ fun FullModelViewer(fraction: Float, mainScreenViewModel: MainScreenViewModel = 
                 childNodes = rememberNodes {
                     add(centerNode)
                 },
-//                environment = environmentLoader.createHDREnvironment(
-//                    assetFileLocation = "environments/studio_small_08_1k.hdr",
-//                )!!,
+
                 onFrame = {
                     centerNode.rotation = cameraRotation
                     cameraNode.lookAt(Position(x = 0.0f, y = 0.5f, z = 0.0f))

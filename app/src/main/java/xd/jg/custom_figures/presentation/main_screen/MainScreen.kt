@@ -1,5 +1,7 @@
 package xd.jg.custom_figures.presentation.main_screen
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -12,6 +14,7 @@ import xd.jg.custom_figures.presentation.main_screen.components.CurrentModelStat
 import xd.jg.custom_figures.presentation.main_screen.components.FullModelViewer
 import xd.jg.custom_figures.utils.Utils
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun MainScreen(
     mainScreenViewModel: MainScreenViewModel = hiltViewModel()
