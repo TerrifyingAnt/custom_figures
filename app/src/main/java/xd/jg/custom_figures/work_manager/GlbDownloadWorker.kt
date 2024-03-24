@@ -1,9 +1,7 @@
 package xd.jg.custom_figures.work_manager
 
-import android.app.Application
 import android.content.Context
 import android.util.Log
-import androidx.work.OneTimeWorkRequest
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
 import androidx.work.Worker

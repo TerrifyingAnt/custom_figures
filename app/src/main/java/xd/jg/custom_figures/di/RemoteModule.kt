@@ -8,7 +8,6 @@ import dagger.hilt.components.SingletonComponent
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import retrofit2.create
 import xd.jg.custom_figures.data.remote.IFigureClient
 import xd.jg.custom_figures.data.repository.FigureRepositoryImpl
 import xd.jg.custom_figures.domain.remote.IFigureRepository
