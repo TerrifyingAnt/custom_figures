@@ -1,18 +1,10 @@
 package xd.jg.custom_figures.presentation.main_screen
 
-import android.app.Application
 import android.content.Context
 import android.graphics.Bitmap
-import android.net.Uri
-import android.os.Build
-import android.provider.MediaStore
 import android.util.Log
-import androidx.annotation.RequiresApi
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.ui.platform.LocalContext
-import androidx.core.net.toUri
-import androidx.hilt.work.HiltWorkerFactory
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asFlow
 import androidx.lifecycle.viewModelScope
@@ -33,8 +25,6 @@ import xd.jg.custom_figures.work_manager.GlbDownloadWorker
 import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.FileOutputStream
-import java.io.InputStream
-import java.time.LocalDateTime
 import javax.inject.Inject
 
 
