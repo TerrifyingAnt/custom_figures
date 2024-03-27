@@ -18,7 +18,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
 import xd.jg.custom_figures.presentation.main_screen.MainScreenViewModel
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun CenteredInRowButton(rowHeight: Float, buttonSize: Float, mainScreenViewModel: MainScreenViewModel = hiltViewModel()) {
     val applicationContext = LocalContext.current.applicationContext

@@ -63,21 +63,25 @@ class MainScreenViewModel @Inject constructor(
     val downloadStateFigure: StateFlow<Resource<String>> = _downloadStateFigure
 
 
-    @RequiresApi(Build.VERSION_CODES.O)
+
     fun savePhoto(context: Context, applicationContext: Context, bitmap: Bitmap) = viewModelScope.launch {
+
+        val imageFile = File(context.cacheDir, System.currentTimeMillis().toString());
+        imageFile.createNewFile();
         val bytes = ByteArrayOutputStream()
         bitmap.compress(Bitmap.CompressFormat.PNG, 100, bytes)
-        val path = MediaStore.Images.Media.insertImage(
-            context.contentResolver,
-            bitmap,
-            LocalDateTime.now().toString(),
-            null
-        )
-        val imageFile = getFileFromUri(context, path.toUri()) ?: return@launch
+        val bitmapData = bytes.toByteArray();
+
+        val fos = FileOutputStream(imageFile);
+        fos.write(bitmapData);
+        fos.flush();
+        fos.close();
+
         updateUIState {
-            copy(photoWasMade = true, photoUri = path, isLoading = true)
+            copy(photoWasMade = true, photoUri = imageFile.absolutePath, isLoading = true)
         }
         val response = iFigureRepository.sendImage(imageFile)
+        imageFile.delete()
         Log.d("CRINGE_TESTS", response.data.toString() + " " + response.message)
         if (response.data != null) {
             updateUIState {
@@ -95,18 +99,6 @@ class MainScreenViewModel @Inject constructor(
         }
 
 
-    }
-
-    private fun getFileFromUri(context: Context, uri: Uri): File? {
-        val inputStream: InputStream? = context.contentResolver.openInputStream(uri)
-        val file = File.createTempFile("temp", null, context.cacheDir).apply {
-            inputStream?.use { input ->
-                FileOutputStream(this).use { output ->
-                    input.copyTo(output)
-                }
-            }
-        }
-        return if (file.exists()) file else null
     }
 
     private fun downloadGlbFile(applicationContext: Context, fileUrl: String, fileName: String, modelState: MutableStateFlow<Resource<String>>) {
