@@ -43,7 +43,7 @@ fun FullModelViewer(fraction: Float, mainScreenViewModel: MainScreenViewModel = 
             val modelLoader = rememberModelLoader(engine)
 
             val cameraNode = rememberCameraNode(engine).apply {
-                position = Position(x = 0.0f, y = 0.5f, z = 1.25f)
+                position = Position(x = 0.0f, y = 1.5f, z = 7f)
             }
             val centerNode = rememberNode(engine)
                 .addChildNode(cameraNode)
@@ -72,7 +72,7 @@ fun FullModelViewer(fraction: Float, mainScreenViewModel: MainScreenViewModel = 
 
                 onFrame = {
                     centerNode.rotation = cameraRotation
-                    cameraNode.lookAt(Position(x = 0.0f, y = 0.5f, z = 0.0f))
+                    cameraNode.lookAt(Position(x = 0f, y = 1.5f, z = 0f))
                 },
                 onViewUpdated = {
                     Log.d("CRINGE_AAAAA", "XD")
@@ -84,24 +84,18 @@ fun FullModelViewer(fraction: Float, mainScreenViewModel: MainScreenViewModel = 
                                 modelInstance = modelLoader.createModelInstance(
                                     file = File(mainScreenViewModel.mainScreenUIState.value.hair)
                                 ),
-                                scaleToUnits = 0.125f,
-                                centerOrigin = Position(x = 0.0f, y = 3.25f, z = 0.0f)
                             )
 
                             eyesNode = ModelNode(
                                 modelInstance = modelLoader.createModelInstance(
                                     file = File(mainScreenViewModel.mainScreenUIState.value.eyes)
                                 ),
-                                scaleToUnits = 0.0665f,
-                                centerOrigin = Position(x = 0.0f, y = 7.25f, z = 0.0f)
                             )
 
                             bodyNode = ModelNode(
                                 modelInstance = modelLoader.createModelInstance(
                                     file = File(mainScreenViewModel.mainScreenUIState.value.body)
                                 ),
-                                scaleToUnits = 1.0f,
-                                centerOrigin = Position(x = 0.0f, y = 0.25f, z = 0f)
                             )
 
 

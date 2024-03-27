@@ -14,15 +14,18 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
 import xd.jg.custom_figures.presentation.main_screen.MainScreenViewModel
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun CenteredInRowButton(context: Context, rowHeight: Float, buttonSize: Float, mainScreenViewModel: MainScreenViewModel = hiltViewModel()) {
+fun CenteredInRowButton(rowHeight: Float, buttonSize: Float, mainScreenViewModel: MainScreenViewModel = hiltViewModel()) {
+    val applicationContext = LocalContext.current.applicationContext
+    val context = LocalContext.current
     val launcher = rememberLauncherForActivityResult(ActivityResultContracts.TakePicturePreview()) { bitmap ->
         if (bitmap != null) {
-            mainScreenViewModel.savePhoto(context, bitmap)
+            mainScreenViewModel.savePhoto(context, applicationContext, bitmap)
         } else {
             Toast.makeText(context, "Что-то пошло не так", Toast.LENGTH_SHORT).show()
         }

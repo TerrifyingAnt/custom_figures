@@ -1,5 +1,6 @@
 package xd.jg.custom_figures.presentation.main_screen
 
+import android.app.Application
 import android.content.Context
 import android.graphics.Bitmap
 import android.net.Uri
@@ -9,11 +10,15 @@ import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.ui.platform.LocalContext
 import androidx.core.net.toUri
+import androidx.hilt.work.HiltWorkerFactory
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asFlow
 import androidx.lifecycle.viewModelScope
+import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
+import androidx.work.workDataOf
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -59,7 +64,7 @@ class MainScreenViewModel @Inject constructor(
 
 
     @RequiresApi(Build.VERSION_CODES.O)
-    fun savePhoto(context: Context, bitmap: Bitmap) = viewModelScope.launch {
+    fun savePhoto(context: Context, applicationContext: Context, bitmap: Bitmap) = viewModelScope.launch {
         val bytes = ByteArrayOutputStream()
         bitmap.compress(Bitmap.CompressFormat.PNG, 100, bytes)
         val path = MediaStore.Images.Media.insertImage(
@@ -84,9 +89,9 @@ class MainScreenViewModel @Inject constructor(
                     )
                 )
             }
-            downloadGlbFile(response.data.eye, "eye", _downloadStateEyes)
-            downloadGlbFile(response.data.hair, "hair", _downloadStateHair)
-            downloadGlbFile(response.data.body, "body", _downloadStateBody)
+            downloadGlbFile(applicationContext, response.data.eye, "eye", _downloadStateEyes)
+            downloadGlbFile(applicationContext, response.data.hair, "hair", _downloadStateHair)
+            downloadGlbFile(applicationContext, response.data.body, "body", _downloadStateBody)
         }
 
 
@@ -104,11 +109,20 @@ class MainScreenViewModel @Inject constructor(
         return if (file.exists()) file else null
     }
 
-    private fun downloadGlbFile(fileUrl: String, fileName: String, modelState: MutableStateFlow<Resource<String>>) {
+    private fun downloadGlbFile(applicationContext: Context, fileUrl: String, fileName: String, modelState: MutableStateFlow<Resource<String>>) {
         modelState.value = Resource.loading(null)
 
+        val data = workDataOf(
+            "fileUrl" to fileUrl,
+            "fileName" to fileName
+        )
+        val workRequest = OneTimeWorkRequestBuilder<GlbDownloadWorker>()
+            .setInputData(data)
+            .build()
+
+        WorkManager.getInstance(applicationContext).enqueue(workRequest)
         val workRequestId = GlbDownloadWorker.enqueueDownload(fileUrl, fileName)
-        val workInfoFlow = WorkManager.getInstance().getWorkInfoByIdLiveData(workRequestId)
+        val workInfoFlow = WorkManager.getInstance(applicationContext).getWorkInfoByIdLiveData(workRequestId)
             .asFlow()
             .map { workInfo ->
                 if (workInfo != null && workInfo.state.isFinished) {

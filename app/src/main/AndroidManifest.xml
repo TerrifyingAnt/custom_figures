@@ -18,6 +18,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Custom_figures"
         android:networkSecurityConfig="@xml/network_security_config"
+
         tools:targetApi="31" >
         <activity
             android:name=".MainActivity"
@@ -30,6 +31,13 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <provider
+            android:name="androidx.startup.InitializationProvider"
+            android:authorities="${applicationId}.androidx-startup"
+            tools:node="remove" />
     </application>
+
+
 
 </manifest>

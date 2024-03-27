@@ -33,7 +33,7 @@ fun MainScreen(
             )
         }
         else {
-            CenteredInRowButton(context, 0.1f, 0.5f)
+            CenteredInRowButton( 0.1f, 0.5f)
         }
     }
 }

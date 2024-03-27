@@ -3,6 +3,7 @@ package xd.jg.custom_figures.data.repository
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.asRequestBody
+import okhttp3.ResponseBody
 import xd.jg.custom_figures.data.dto.ModelPartListDto
 import xd.jg.custom_figures.data.remote.BaseDataSource
 import xd.jg.custom_figures.data.remote.IFigureClient
@@ -19,4 +20,10 @@ class FigureRepositoryImpl @Inject constructor(
         val body = MultipartBody.Part.createFormData("item", imageFile.name, requestFile)
         return safeApiCall { iFigureClient.sendPhoto(body) }
     }
+
+    override suspend fun getModel(urlPath: String): Resource<ResponseBody> {
+        return safeApiCall { iFigureClient.downloadFile(urlPath) }
+    }
+
+
 }
