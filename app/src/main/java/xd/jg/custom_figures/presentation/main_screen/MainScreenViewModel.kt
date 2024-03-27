@@ -56,16 +56,16 @@ class MainScreenViewModel @Inject constructor(
 
     fun savePhoto(context: Context, applicationContext: Context, bitmap: Bitmap) = viewModelScope.launch {
 
-        val imageFile = File(context.cacheDir, System.currentTimeMillis().toString());
-        imageFile.createNewFile();
+        val imageFile = File(context.cacheDir, System.currentTimeMillis().toString())
+        imageFile.createNewFile()
         val bytes = ByteArrayOutputStream()
         bitmap.compress(Bitmap.CompressFormat.PNG, 100, bytes)
-        val bitmapData = bytes.toByteArray();
+        val bitmapData = bytes.toByteArray()
 
-        val fos = FileOutputStream(imageFile);
-        fos.write(bitmapData);
-        fos.flush();
-        fos.close();
+        val fos = FileOutputStream(imageFile)
+        fos.write(bitmapData)
+        fos.flush()
+        fos.close()
 
         updateUIState {
             copy(photoWasMade = true, photoUri = imageFile.absolutePath, isLoading = true)
