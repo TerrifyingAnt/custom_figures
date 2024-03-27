@@ -9,7 +9,7 @@ import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import xd.jg.custom_figures.data.remote.IFigureClient
-import xd.jg.custom_figures.data.repository.FigureRepositoryImpl
+import xd.jg.custom_figures.data.repository.remote.FigureRepositoryImpl
 import xd.jg.custom_figures.domain.remote.IFigureRepository
 import xd.jg.custom_figures.domain.use_case.SendImageUseCase
 import xd.jg.custom_figures.utils.Constants

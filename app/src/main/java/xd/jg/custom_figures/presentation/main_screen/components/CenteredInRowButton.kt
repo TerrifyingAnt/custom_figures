@@ -16,7 +16,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import xd.jg.custom_figures.presentation.main_screen.MainScreenViewModel
 
 @Composable
-fun CenteredInRowButton(rowHeight: Float, buttonSize: Float, mainScreenViewModel: MainScreenViewModel = hiltViewModel()) {
+fun CenteredInRowButton(rowHeight: Float, buttonSize: Float, buttonText: String, mainScreenViewModel: MainScreenViewModel = hiltViewModel()) {
     val applicationContext = LocalContext.current.applicationContext
     val context = LocalContext.current
     val launcher = rememberLauncherForActivityResult(ActivityResultContracts.TakePicturePreview()) { bitmap ->
@@ -38,7 +38,7 @@ fun CenteredInRowButton(rowHeight: Float, buttonSize: Float, mainScreenViewModel
             },
             modifier = Modifier.fillMaxWidth(buttonSize)
         ) {
-            Text("Сделайте фото")
+            Text(buttonText)
         }
     }
 }

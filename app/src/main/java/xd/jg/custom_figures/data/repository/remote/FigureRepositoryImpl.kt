@@ -1,4 +1,4 @@
-package xd.jg.custom_figures.data.repository
+package xd.jg.custom_figures.data.repository.remote
 
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody

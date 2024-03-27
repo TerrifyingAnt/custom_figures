@@ -32,8 +32,12 @@ import kotlin.time.Duration.Companion.seconds
 import kotlin.time.DurationUnit
 
 @Composable
-fun FullModelViewer(fraction: Float, mainScreenViewModel: MainScreenViewModel = hiltViewModel()) {
+fun FullModelViewer(fraction: Float, baseState: Boolean?, mainScreenViewModel: MainScreenViewModel = hiltViewModel()) {
     val downloadState by mainScreenViewModel.downloadStateFigure.collectAsState()
+    var listOfPaths = ""
+    if (baseState == true){
+        listOfPaths = mainScreenViewModel.getPaths(LocalContext.current.applicationContext)
+    }
 
     val context = LocalContext.current
 
@@ -75,11 +79,30 @@ fun FullModelViewer(fraction: Float, mainScreenViewModel: MainScreenViewModel = 
                     cameraNode.lookAt(Position(x = 0f, y = 1.5f, z = 0f))
                 },
                 onViewUpdated = {
-                    Log.d("CRINGE_AAAAA", "XD")
+                    if (baseState == true) {
+                        this.clearChildNodes()
+                        hairNode = ModelNode(
+                            modelInstance = modelLoader.createModelInstance(
+                                file = File("$listOfPaths/hair")
+                            ),
+                        )
+
+                        eyesNode = ModelNode(
+                            modelInstance = modelLoader.createModelInstance(
+                                file = File("$listOfPaths/eye")
+                            ),
+                        )
+
+                        bodyNode = ModelNode(
+                            modelInstance = modelLoader.createModelInstance(
+                                file = File("$listOfPaths/body")
+                            ),
+                        )
+                        this.addChildNodes(listOf(centerNode, hairNode, eyesNode, bodyNode))
+                    }
                     when (downloadState.status) {
                         Resource.Status.SUCCESS -> {
                             this.clearChildNodes()
-
                             hairNode = ModelNode(
                                 modelInstance = modelLoader.createModelInstance(
                                     file = File(mainScreenViewModel.mainScreenUIState.value.hair)
@@ -97,14 +120,7 @@ fun FullModelViewer(fraction: Float, mainScreenViewModel: MainScreenViewModel = 
                                     file = File(mainScreenViewModel.mainScreenUIState.value.body)
                                 ),
                             )
-
-
-
                             this.addChildNodes(listOf(centerNode, hairNode, eyesNode, bodyNode))
-
-                            Log.d("CRINGE_SUCCESS", "XD")
-                            // mainScreenViewModel.changeState()
-
                         }
                         Resource.Status.LOADING -> {
 

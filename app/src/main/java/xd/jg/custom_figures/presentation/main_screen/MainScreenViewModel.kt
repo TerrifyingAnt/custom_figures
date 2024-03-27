@@ -15,10 +15,12 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import xd.jg.custom_figures.data.dto.ModelPartListDto
+import xd.jg.custom_figures.data.local.DataStoreManager
 import xd.jg.custom_figures.domain.remote.IFigureRepository
 import xd.jg.custom_figures.utils.Resource
 import xd.jg.custom_figures.work_manager.GlbDownloadWorker
@@ -30,8 +32,16 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MainScreenViewModel @Inject constructor(
-    private val iFigureRepository: IFigureRepository
+    private val iFigureRepository: IFigureRepository,
+    private val dataStoreManager: DataStoreManager
 ): ViewModel() {
+
+    init{
+        checkIfPhotoWasMade()
+    }
+
+    private val _launchModelOnStartup = MutableStateFlow<Resource<Boolean>>(Resource.loading(null))
+    val launchModelOnStartup: StateFlow<Resource<Boolean>> = _launchModelOnStartup
 
     private val _mainScreenUIState = mutableStateOf(MainScreenUIState())
     val mainScreenUIState: State<MainScreenUIState> = _mainScreenUIState
@@ -52,8 +62,7 @@ class MainScreenViewModel @Inject constructor(
     private val _downloadStateFigure = MutableStateFlow<Resource<String>>(Resource.loading(null))
     val downloadStateFigure: StateFlow<Resource<String>> = _downloadStateFigure
 
-
-
+    // метод сохранения и отправки фотографии
     fun savePhoto(context: Context, applicationContext: Context, bitmap: Bitmap) = viewModelScope.launch {
 
         val imageFile = File(context.cacheDir, System.currentTimeMillis().toString())
@@ -70,6 +79,8 @@ class MainScreenViewModel @Inject constructor(
         updateUIState {
             copy(photoWasMade = true, photoUri = imageFile.absolutePath, isLoading = true)
         }
+        dataStoreManager.setPhotoWasMade(true)
+
         val response = iFigureRepository.sendImage(imageFile)
         imageFile.delete()
         Log.d("CRINGE_TESTS", response.data.toString() + " " + response.message)
@@ -91,6 +102,16 @@ class MainScreenViewModel @Inject constructor(
 
     }
 
+    private fun checkIfPhotoWasMade() = viewModelScope.launch {
+        val photoWasMade = dataStoreManager.getPhotoWasMade().first() ?: false
+        _launchModelOnStartup.value = Resource.success(photoWasMade)
+    }
+
+    fun getPaths(applicationContext: Context): String {
+        return applicationContext.filesDir.absolutePath
+    }
+
+    // метод запуска воркеров и отслеживания состояния скачивания
     private fun downloadGlbFile(applicationContext: Context, fileUrl: String, fileName: String, modelState: MutableStateFlow<Resource<String>>) {
         modelState.value = Resource.loading(null)
 
@@ -158,8 +179,6 @@ class MainScreenViewModel @Inject constructor(
         }
     }
 
-    fun changeState() = viewModelScope.launch {
-        _downloadStateFigure.value = Resource.loading(null)
-    }
+
 
 }
