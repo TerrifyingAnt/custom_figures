@@ -1,12 +1,10 @@
 package xd.jg.custom_figures.work_manager
 
 import android.content.Context
-import android.util.Log
 import androidx.hilt.work.HiltWorker
-import androidx.work.Data
+import androidx.work.CoroutineWorker
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
-import androidx.work.Worker
 import androidx.work.WorkerParameters
 import androidx.work.workDataOf
 import dagger.assisted.Assisted
@@ -17,10 +15,7 @@ import xd.jg.custom_figures.domain.remote.IFigureRepository
 import xd.jg.custom_figures.utils.Resource
 import java.io.File
 import java.io.FileOutputStream
-import java.net.HttpURLConnection
-import java.net.URL
 import java.util.UUID
-import javax.inject.Inject
 
 @HiltWorker
 class GlbDownloadWorker @AssistedInject constructor(
@@ -28,9 +23,9 @@ class GlbDownloadWorker @AssistedInject constructor(
     @Assisted workerParams: WorkerParameters,
     private val iFigureRepository: IFigureRepository
 ):
-    Worker(context, workerParams) {
+    CoroutineWorker(context, workerParams) {
 
-    override fun doWork(): Result {
+    override suspend fun doWork(): Result {
         val fileUrl = inputData.getString("fileUrl") ?: return Result.failure()
         val fileName = inputData.getString("fileName") ?: return Result.failure()
 
@@ -52,7 +47,7 @@ class GlbDownloadWorker @AssistedInject constructor(
     }
 
     companion object {
-        fun enqueueDownload(fileUrl: String, fileName: String): UUID{
+        fun enqueueDownload(fileUrl: String, fileName: String, applicationContext: Context): UUID{
             val workRequest = OneTimeWorkRequestBuilder<GlbDownloadWorker>()
                 .setInputData(
                     workDataOf(
@@ -62,19 +57,29 @@ class GlbDownloadWorker @AssistedInject constructor(
                 )
                 .build()
 
-            WorkManager.getInstance().enqueue(workRequest)
+            WorkManager.getInstance(applicationContext).enqueue(workRequest)
             return workRequest.id
         }
     }
 
-    private fun saveFile(body: ResponseBody, fileName: String): String {
+    private suspend fun saveFile(body: ResponseBody, fileName: String): String {
         val outputFile = File(applicationContext.filesDir, fileName)
         val outputStream = FileOutputStream(outputFile)
-        outputStream.use { stream ->
-            val inputStream = body.byteStream()
-            inputStream.copyTo(stream)
+        val totalBytes = body.contentLength()
+        var downloadedBytes = 0L
+        val inputStream = body.byteStream()
+
+        val buffer = ByteArray(8192)
+        var bytesRead: Int
+        while (inputStream.read(buffer).also { bytesRead = it } != -1) {
+            outputStream.write(buffer, 0, bytesRead)
+            downloadedBytes += bytesRead.toLong()
+            setProgress(workDataOf("progress" to (downloadedBytes.toFloat() / totalBytes.toFloat())))
         }
+
+        outputStream.flush()
         outputStream.close()
         return outputFile.absolutePath
     }
+
 }

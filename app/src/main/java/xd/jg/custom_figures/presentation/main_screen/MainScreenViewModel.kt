@@ -9,6 +9,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asFlow
 import androidx.lifecycle.viewModelScope
 import androidx.work.OneTimeWorkRequestBuilder
+import androidx.work.WorkInfo
 import androidx.work.WorkManager
 import androidx.work.workDataOf
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -124,15 +125,14 @@ class MainScreenViewModel @Inject constructor(
             .build()
 
         WorkManager.getInstance(applicationContext).enqueue(workRequest)
-        val workRequestId = GlbDownloadWorker.enqueueDownload(fileUrl, fileName)
+        val workRequestId = GlbDownloadWorker.enqueueDownload(fileUrl, fileName, applicationContext)
         val workInfoFlow = WorkManager.getInstance(applicationContext).getWorkInfoByIdLiveData(workRequestId)
             .asFlow()
             .map { workInfo ->
-                if (workInfo != null && workInfo.state.isFinished) {
+                if (workInfo != null && workInfo.state == WorkInfo.State.SUCCEEDED) {
                     val outputData = workInfo.outputData
                     val filePath = outputData.getString("filePath")
                     val errorMessage = outputData.getString("errorMessage")
-                    Log.d("CRINGE_PATH", filePath.toString())
                     if (filePath != null) {
                         updateUIState {
                             if (fileName == "hair") {
@@ -156,14 +156,18 @@ class MainScreenViewModel @Inject constructor(
                         if (_mainScreenUIState.value.body != "" &&
                             _mainScreenUIState.value.hair != "" &&
                             _mainScreenUIState.value.eyes != "") {
-                            _downloadStateFigure.value = Resource.success("xd")
+                            _downloadStateFigure.value = Resource.success(filePath)
                         }
                         Resource.success(filePath)
-                    } else if (errorMessage != null) {
+                    }else if (errorMessage != null) {
                         Resource.error(errorMessage)
                     } else {
                         Resource.error("Unknown error")
                     }
+                } else if (workInfo != null && workInfo.state == WorkInfo.State.RUNNING) {
+                    val progress = workInfo.progress.getFloat("progress", 0f)
+                    modelState.value = Resource.loading(progress.toString())
+                    Resource.loading(progress.toString())
                 } else {
                     modelState.value
                 }
@@ -173,7 +177,7 @@ class MainScreenViewModel @Inject constructor(
 
 
         viewModelScope.launch {
-            workInfoFlow.collect { state ->
+            workInfoFlow.collect {state ->
                 modelState.value = state
             }
         }

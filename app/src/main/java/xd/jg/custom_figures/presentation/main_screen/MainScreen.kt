@@ -1,6 +1,7 @@
 package xd.jg.custom_figures.presentation.main_screen
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.material3.Text
@@ -22,31 +23,34 @@ fun MainScreen(
     val previousModel = mainScreenViewModel.launchModelOnStartup.collectAsState()
     var buttonText = "Сделать фото"
 
-    when(previousModel.value.status) {
-        Resource.Status.SUCCESS -> {
-            if (previousModel.value.data == true) {
-                FullModelViewer(fraction = 0.85f, previousModel.value.data)
+    Box() {
+        when (previousModel.value.status) {
+            Resource.Status.SUCCESS -> {
+                if (previousModel.value.data == true) {
+                    FullModelViewer(baseState = previousModel.value.data)
+                } else {
+                    Text("Сделай фоту -_-")
+                }
             }
-            else {
+
+            Resource.Status.LOADING -> {
+                Text("Сделай фоту -_-")
+            }
+
+            Resource.Status.ERROR -> {
                 Text("Сделай фоту -_-")
             }
         }
-        Resource.Status.LOADING -> {
-            Text("Сделай фоту -_-")
-        }
-        Resource.Status.ERROR -> {
-            Text("Сделай фоту -_-")
-        }
-    }
-    Column(verticalArrangement = Arrangement.Bottom, modifier = Modifier.fillMaxHeight()) {
-        if (photoWasMade || previousModel.value.data == true) {
-            CurrentModelState(
-                currentModelState = Utils.createTestData()
-            )
-            buttonText = "Переснять"
-        }
-        CenteredInRowButton( 0.1f, 0.5f, buttonText)
 
+        Column(verticalArrangement = Arrangement.Bottom, modifier = Modifier.fillMaxHeight()) {
+            if (photoWasMade || previousModel.value.data == true) {
+                CurrentModelState(
+                    currentModelState = Utils.createTestData()
+                )
+                buttonText = "Переснять"
+            }
+            CenteredInRowButton(0.1f, 0.5f, buttonText)
+        }
     }
 }
 
