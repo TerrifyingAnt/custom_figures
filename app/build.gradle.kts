@@ -94,6 +94,13 @@ dependencies {
     // dataStore
     implementation("androidx.datastore:datastore-preferences:1.0.0")
 
+    // colorPicker
+    implementation("com.github.skydoves:colorpicker-compose:1.0.7")
+
+    // extended icons
+    runtimeOnly("org.jetbrains.compose.material:material-icons-extended:1.6.1")
+
+
 
 
 

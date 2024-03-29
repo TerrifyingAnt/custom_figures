@@ -45,6 +45,8 @@ fun FullModelViewer(nullFraction: Float? = 1f, baseState: Boolean?, mainScreenVi
         listOfPaths = mainScreenViewModel.getPaths(LocalContext.current.applicationContext)
     }
 
+    val skyBoxUserScreen by mainScreenViewModel.skyBoxUserScreen.collectAsState()
+
     val context = LocalContext.current
 
     Row(verticalAlignment = Alignment.Top, modifier = Modifier
@@ -61,7 +63,8 @@ fun FullModelViewer(nullFraction: Float? = 1f, baseState: Boolean?, mainScreenVi
             )
 
             val skybox = Skybox.Builder().build(engine)
-            skybox.setColor(255f, 255f, 255f, 255f)
+            val color = skyBoxUserScreen.data ?: Color(255, 255, 255, 255)
+            skybox.setColor(color.red, color.green, color.blue, color.alpha)
             val indirectLight = env?.indirectLight
             indirectLight?.intensity = 50_000f
             val coolEnv = environmentLoader.createEnvironment(indirectLight, skybox)
@@ -150,6 +153,15 @@ fun FullModelViewer(nullFraction: Float? = 1f, baseState: Boolean?, mainScreenVi
                             Toast.makeText(context, "${downloadState.message}" , Toast.LENGTH_SHORT).show()
                             Log.d("CRINGE_ERROR", "XD")
                         }
+                    }
+
+                    when (skyBoxUserScreen.status) {
+                        Resource.Status.SUCCESS -> {
+                            val newColor = skyBoxUserScreen.data ?: return@Scene
+                            scene.skybox?.setColor(newColor.red, newColor.green, newColor.blue, newColor.alpha)
+
+                        }
+                        else -> {}
                     }
                 }
             )

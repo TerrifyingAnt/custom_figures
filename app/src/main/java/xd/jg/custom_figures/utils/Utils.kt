@@ -2,6 +2,7 @@ package xd.jg.custom_figures.utils
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.ui.graphics.Color
 import androidx.hilt.navigation.compose.hiltViewModel
 import xd.jg.custom_figures.presentation.main_screen.MainScreenViewModel
 import xd.jg.custom_figures.presentation.main_screen.models.PartModelData
@@ -28,5 +29,11 @@ object Utils {
                 mainScreenViewModel.downloadStateBody.collectAsState()
             )
         )
+    }
+
+    fun getColorFromAngle(angle: Float, distance: Float, maxDistance: Float = 150f): Color {
+        val hue = angle / 360
+        val saturation = distance / maxDistance
+        return Color.hsv(hue, saturation, 1f)
     }
 }

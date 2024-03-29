@@ -9,5 +9,5 @@ data class MainScreenUIState (
     val eyes: String = "", // тут абсолютные пути в андроиде до файлов с модельками
     val hair: String = "",
     val body: String = "",
-    val isLoading: Boolean = false
+    val isLoading: Boolean = false,
 )

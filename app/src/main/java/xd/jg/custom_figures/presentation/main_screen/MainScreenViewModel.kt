@@ -5,6 +5,7 @@ import android.graphics.Bitmap
 import android.util.Log
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asFlow
 import androidx.lifecycle.viewModelScope
@@ -62,6 +63,11 @@ class MainScreenViewModel @Inject constructor(
 
     private val _downloadStateFigure = MutableStateFlow<Resource<String>>(Resource.loading(null))
     val downloadStateFigure: StateFlow<Resource<String>> = _downloadStateFigure
+
+    private val _skyBoxUserScreen = MutableStateFlow<Resource<Color>>(Resource.loading(Color(255, 255, 255, 255)))
+    val skyBoxUserScreen: StateFlow<Resource<Color>> = _skyBoxUserScreen
+
+
 
     // метод сохранения и отправки фотографии
     fun savePhoto(context: Context, applicationContext: Context, bitmap: Bitmap) = viewModelScope.launch {
@@ -181,6 +187,11 @@ class MainScreenViewModel @Inject constructor(
                 modelState.value = state
             }
         }
+    }
+
+    fun changeSkyBoxColor(color: Color) = viewModelScope.launch {
+        dataStoreManager.setCurrentColor(color)
+        _skyBoxUserScreen.value = Resource.success(color)
     }
 
 
