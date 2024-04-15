@@ -30,13 +30,10 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             Custom_figuresTheme {
-                // A surface container using the 'background' color from the theme
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    // MainScreenTemplate()
-                    // AuthScreen()
                     val navController: NavHostController = rememberNavController()
                     var buttonsVisible by remember { mutableStateOf(true) }
                     Scaffold(
@@ -44,7 +41,6 @@ class MainActivity : ComponentActivity() {
                             if (buttonsVisible) {
                                 CustomBottomBar(
                                     navController = navController,
-                                    state = buttonsVisible,
                                     modifier = Modifier
                                 )
                             }

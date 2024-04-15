@@ -8,4 +8,6 @@
     <string name="register_string">Зарегистрироваться</string>
     <string name="registration_string">Регистрация</string>
     <string name="your_name_string">Ваше имя</string>
+    <string name="search_string">Поиск</string>
+    <string name="catalog_string">Каталог</string>
 </resources>

@@ -18,9 +18,9 @@ import xd.jg.custom_figures.ui.theme.robotoRegularFont
 import xd.jg.custom_figures.utils.Constants.ROUNDED
 
 @Composable
-fun CustomButton(buttonColor: Color, buttonText: String, modifiers: Modifier) {
+fun CustomButton(buttonColor: Color, buttonText: String, onClick: () -> Unit, modifiers: Modifier) {
     Button(
-        onClick = {},
+        onClick = onClick,
         shape = RoundedCornerShape(ROUNDED.dp),
         colors = ButtonDefaults.buttonColors(
             containerColor = buttonColor,
@@ -38,5 +38,5 @@ fun CustomButton(buttonColor: Color, buttonText: String, modifiers: Modifier) {
 @Preview
 @Composable
 fun CustomButtonPreview() {
-    CustomButton(CustomSecondaryContainer, "Войти", Modifier.fillMaxWidth().padding(20.dp, 0.dp, 20.dp, 5.dp))
+    CustomButton(CustomSecondaryContainer, "Войти", {}, Modifier.fillMaxWidth().padding(20.dp, 0.dp, 20.dp, 5.dp))
 }

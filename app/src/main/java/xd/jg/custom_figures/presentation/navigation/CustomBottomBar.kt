@@ -1,24 +1,25 @@
 package xd.jg.custom_figures.presentation.navigation
 
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.NavigationBarItemDefaults
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.dp
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
-import xd.jg.custom_figures.ui.theme.CustomPrimaryContainer
-import xd.jg.custom_figures.ui.theme.CustomTertiary
+import xd.jg.custom_figures.ui.theme.CustomInversePrimary
+import xd.jg.custom_figures.ui.theme.CustomPrimary
 
 @Composable
 fun CustomBottomBar(
     navController: NavHostController,
-    state: Boolean,
     modifier: Modifier = Modifier
 ) {
     val screens = listOf(
@@ -29,19 +30,16 @@ fun CustomBottomBar(
     )
 
     NavigationBar(
-        modifier = modifier,
-        containerColor = CustomPrimaryContainer
+        modifier = modifier.fillMaxWidth().height(50.dp),
+        containerColor = CustomPrimary
     ) {
         val navBackStackEntry by navController.currentBackStackEntryAsState()
         val currentRoute = navBackStackEntry?.destination?.route
 
         screens.forEach { screen ->
             NavigationBarItem(
-                label = {
-                    Text(text = screen.title!!)
-                },
                 icon = {
-                    Icon(imageVector = screen.icon!!, contentDescription = "")
+                    Icon(imageVector = screen.icon, contentDescription = "")
                 },
                 selected = currentRoute == screen.route,
                 onClick = {
@@ -54,11 +52,11 @@ fun CustomBottomBar(
                     }
                 },
                 colors = NavigationBarItemDefaults.colors(
-                    unselectedTextColor = CustomTertiary,
+                    unselectedTextColor = CustomInversePrimary,
                     selectedTextColor = Color.White,
                     selectedIconColor = Color.White,
-                    unselectedIconColor = CustomTertiary,
-                    indicatorColor = Color.White
+                    unselectedIconColor = CustomInversePrimary,
+                    indicatorColor = CustomPrimary
                 ),
             )
         }

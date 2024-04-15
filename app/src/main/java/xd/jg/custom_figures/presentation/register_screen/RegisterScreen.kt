@@ -21,12 +21,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import androidx.navigation.NavGraph.Companion.findStartDestination
 import xd.jg.custom_figures.R
 import xd.jg.custom_figures.presentation.components.CustomButton
 import xd.jg.custom_figures.presentation.components.CustomTextField
+import xd.jg.custom_figures.presentation.navigation.BottomNavigationItems
+import xd.jg.custom_figures.presentation.navigation.Routes
 import xd.jg.custom_figures.ui.theme.CustomPrimary
 import xd.jg.custom_figures.ui.theme.CustomSecondary
 import xd.jg.custom_figures.ui.theme.CustomSecondaryContainer
@@ -36,7 +39,7 @@ import xd.jg.custom_figures.utils.Constants.END_PADDING
 import xd.jg.custom_figures.utils.Constants.START_PADDING
 
 @Composable
-fun RegisterScreen() {
+fun RegisterScreen(navController: NavController) {
     Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.fillMaxHeight(0.8f)) {
         Row(horizontalArrangement = Arrangement.Center, modifier = Modifier.fillMaxWidth()) {
             Text(text = stringResource(R.string.registration_string),  fontFamily = unboundedBoldFont, fontSize = 30.sp, color = CustomSecondary)
@@ -112,6 +115,11 @@ fun RegisterScreen() {
             CustomButton(
                 buttonColor = CustomSecondaryContainer,
                 buttonText = stringResource(R.string.register_string),
+                {
+                    navController.navigate(BottomNavigationItems.CatalogScreen.route) {
+                        popUpTo(0)
+                    }
+                },
                 modifiers = Modifier
                     .fillMaxWidth()
                     .padding(START_PADDING.dp, 0.dp, END_PADDING.dp, 5.dp)
@@ -120,16 +128,13 @@ fun RegisterScreen() {
         Row(horizontalArrangement = Arrangement.Center, modifier = Modifier.fillMaxWidth()) {
             Text(text="Уже есть аккаунт? ", fontFamily = robotoRegularFont, fontSize = 18.sp, color = CustomSecondary, fontWeight = FontWeight.Bold)
             Text(text="Войти!", fontFamily = robotoRegularFont, fontSize = 18.sp, color = CustomPrimary, fontWeight = FontWeight.Bold, modifier = Modifier.clickable {
-                {}
-                // TODO
+                navController.navigate(Routes.Auth.route) {
+                    popUpTo(navController.graph.findStartDestination().id) {
+                        saveState = true
+                    }
+                }
             })
         }
-
+        Spacer(modifier = Modifier.size(20.dp))
     }
-}
-
-@Preview(showSystemUi = true)
-@Composable
-fun RegisterScreenPreview() {
-    RegisterScreen()
 }

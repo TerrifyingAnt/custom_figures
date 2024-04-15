@@ -15,6 +15,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Color.Companion.White
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.input.KeyboardType
@@ -37,7 +38,10 @@ fun CustomTextField(
     visualTransformation: VisualTransformation = VisualTransformation.None,
     onValueChanged: (String) -> Unit,
     trailingIcon: ImageVector? = null,
-    onTrailingIconClick: (() -> Unit)?
+    leadingIcon: ImageVector? = null,
+    onTrailingIconClick: (() -> Unit)? = null,
+    backgroundColor: Color? = null,
+    cursorColor: Color? = null
 ) {
     Column(
         modifier = modifier
@@ -48,19 +52,27 @@ fun CustomTextField(
                 .fillMaxWidth()
                 .padding(top = 3.dp)
                 .height(60.dp),
-            label = { Text(text = description, color = CustomTertiary, fontFamily = robotoRegularFont) },
+            label = { Text(text = description, color = cursorColor ?: CustomTertiary, fontFamily = robotoRegularFont) },
             value = textValue,
             colors = TextFieldDefaults.colors(
-                focusedContainerColor = White,
-                unfocusedContainerColor = White,
-                disabledContainerColor = White,
-                cursorColor = CustomPrimary,
-                focusedIndicatorColor = CustomPrimary,
+                focusedContainerColor = backgroundColor ?: White,
+                unfocusedContainerColor = backgroundColor ?: White,
+                disabledContainerColor = backgroundColor ?: White,
+                cursorColor = cursorColor ?: CustomPrimary,
+                focusedIndicatorColor = cursorColor ?: CustomPrimary,
                 unfocusedIndicatorColor = CustomTertiaryContainer,
             ),
             onValueChange = onValueChanged,
             shape = RoundedCornerShape(ROUNDED.dp),
             singleLine = true,
+            leadingIcon = {if(leadingIcon != null){
+                Icon(
+                    imageVector = leadingIcon,
+                    contentDescription = null,
+                    tint = cursorColor ?: CustomPrimary
+                )
+            }
+            },
             trailingIcon = {
                 if(trailingIcon != null){
                     Icon(
