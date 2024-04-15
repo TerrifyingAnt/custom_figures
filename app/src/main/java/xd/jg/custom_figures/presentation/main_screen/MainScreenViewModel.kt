@@ -175,7 +175,9 @@ class MainScreenViewModel @Inject constructor(
                     modelState.value = Resource.loading(progress.toString())
                     Resource.loading(progress.toString())
                 } else {
-                    modelState.value
+                    val modelName = if (fileName == "hair") "hair" else if (fileName == "body") "body" else "eye"
+                    modelState.value = Resource.error("xd", modelName)
+                    Resource.error("xd", modelName)
                 }
             }
             .stateIn(viewModelScope, SharingStarted.WhileSubscribed(), modelState.value)
@@ -189,6 +191,20 @@ class MainScreenViewModel @Inject constructor(
         }
     }
 
+
+    fun retryDownloadGlbFile(applicationContext: Context, name: String) = viewModelScope.launch {
+        if (name == "body") {
+            downloadGlbFile(applicationContext, mainScreenUIState.value.modelPartsList?.body ?: "", "body", _downloadStateBody)
+        }
+        else {
+            if (name == "hair") {
+                downloadGlbFile(applicationContext, mainScreenUIState.value.modelPartsList?.hair ?: "", "hair", _downloadStateHair)
+            }
+            else {
+                downloadGlbFile(applicationContext, mainScreenUIState.value.modelPartsList?.eye ?: "", "eye", _downloadStateEyes)
+            }
+        }
+    }
     fun changeSkyBoxColor(color: Color) = viewModelScope.launch {
         dataStoreManager.setCurrentColor(color)
         _skyBoxUserScreen.value = Resource.success(color)

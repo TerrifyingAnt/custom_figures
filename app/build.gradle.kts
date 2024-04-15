@@ -98,7 +98,13 @@ dependencies {
     implementation("com.github.skydoves:colorpicker-compose:1.0.7")
 
     // extended icons
-    runtimeOnly("org.jetbrains.compose.material:material-icons-extended:1.6.1")
+    implementation("org.jetbrains.compose.material:material-icons-extended:1.6.1")
+
+
+    // animations
+    implementation("org.jetbrains.compose.animation:animation:1.6.1")
+
+
 
 
 

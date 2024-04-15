@@ -9,7 +9,6 @@ import androidx.work.WorkerParameters
 import androidx.work.workDataOf
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
-import kotlinx.coroutines.runBlocking
 import okhttp3.ResponseBody
 import xd.jg.custom_figures.domain.remote.IFigureRepository
 import xd.jg.custom_figures.utils.Resource
@@ -29,7 +28,7 @@ class GlbDownloadWorker @AssistedInject constructor(
         val fileUrl = inputData.getString("fileUrl") ?: return Result.failure()
         val fileName = inputData.getString("fileName") ?: return Result.failure()
 
-        return runBlocking {downloadFile(fileUrl, fileName)}
+        return downloadFile(fileUrl, fileName)
     }
 
     private suspend fun downloadFile(fileUrl: String, fileName: String): Result {
