@@ -1,4 +1,4 @@
-package xd.jg.custom_figures.presentation.main_screen.models
+package xd.jg.custom_figures.presentation.main_screen
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -20,9 +20,7 @@ import xd.jg.custom_figures.presentation.main_screen.components.MenuButton
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MainScreenTemplate(
-
-) {
+fun MainScreenTemplate() {
     val bottomSheetState = rememberStandardBottomSheetState(
         skipHiddenState = false
     )
