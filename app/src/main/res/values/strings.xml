@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">custom_figures</string>
+    <string name="authentication_string">Авторизация</string>
+    <string name="login_string">Почта</string>
+    <string name="password_string">Пароль</string>
+    <string name="repeat_password_string">Повторите пароль</string>
+    <string name="enter_string">Войти</string>
+    <string name="register_string">Зарегистрироваться</string>
+    <string name="registration_string">Регистрация</string>
+    <string name="your_name_string">Ваше имя</string>
 </resources>

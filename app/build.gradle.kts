@@ -100,6 +100,8 @@ dependencies {
     // extended icons
     implementation("org.jetbrains.compose.material:material-icons-extended:1.6.1")
 
+    // navigation
+    implementation("androidx.navigation:navigation-compose:2.7.6")
 
     // animations
     implementation("org.jetbrains.compose.animation:animation:1.6.1")
