@@ -106,6 +106,9 @@ dependencies {
     // animations
     implementation("org.jetbrains.compose.animation:animation:1.6.1")
 
+    // cool dots
+    implementation("com.tbuonomo:dotsindicator:5.0")
+
 
 
 
