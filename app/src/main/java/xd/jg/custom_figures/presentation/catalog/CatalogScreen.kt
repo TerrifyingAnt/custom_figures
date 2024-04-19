@@ -39,7 +39,7 @@ fun CatalogScreen(
         viewModel.getTags()
     }
 
-    Column(modifier = Modifier.fillMaxHeight(0.8f)) {
+    Column(modifier = Modifier.fillMaxHeight()) {
         Row(horizontalArrangement = Arrangement.Center, modifier = Modifier.fillMaxWidth()) {
             Text(
                 stringResource(R.string.catalog_string),

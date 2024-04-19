@@ -2,14 +2,11 @@ package xd.jg.custom_figures.presentation.catalog.components
 
 import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
@@ -25,13 +22,7 @@ fun FigureList(
 ) {
     when(viewModel.catalogUIState.value.currentUIState.status) {
         Resource.Status.LOADING ->  {
-            Column(
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.Center,
-                modifier = Modifier.fillMaxSize()
-            ) {
-                CircularProgressIndicator()
-            }
+            FiguresShimmerLoading()
         }
         Resource.Status.ERROR -> {
             Toast.makeText(LocalContext.current, viewModel.catalogUIState.value.currentFiltersTag.message, Toast.LENGTH_SHORT).show()
