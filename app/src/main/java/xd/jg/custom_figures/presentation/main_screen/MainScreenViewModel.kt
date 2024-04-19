@@ -118,7 +118,6 @@ class MainScreenViewModel @Inject constructor(
         return applicationContext.filesDir.absolutePath
     }
 
-    // метод запуска воркеров и отслеживания состояния скачивания
     private fun downloadGlbFile(applicationContext: Context, fileUrl: String, fileName: String, modelState: MutableStateFlow<Resource<String>>) {
         modelState.value = Resource.loading(null)
 

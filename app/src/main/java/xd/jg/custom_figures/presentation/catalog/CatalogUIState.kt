@@ -10,5 +10,6 @@ data class CatalogUIState (
     val currentFiltersTag: Resource<List<TagFilter>> = Resource.loading(),
     val currentFilterTitle: MutableState<String> = mutableStateOf(""),
     val currentPage: Int = 0,
-    val currentUIState: Resource<List<FigurePreviewDto>> = Resource.loading()
+    val currentUIState: Resource<List<FigurePreviewDto>> = Resource.loading(),
+    val isDialogShown: MutableState<Boolean> = mutableStateOf(false)
 )

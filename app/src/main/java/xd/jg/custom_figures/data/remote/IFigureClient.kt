@@ -7,8 +7,10 @@ import retrofit2.http.GET
 import retrofit2.http.Multipart
 import retrofit2.http.POST
 import retrofit2.http.Part
+import retrofit2.http.Path
 import retrofit2.http.Query
 import retrofit2.http.Url
+import xd.jg.custom_figures.data.dto.FigureDto
 import xd.jg.custom_figures.data.dto.FigurePreviewDto
 import xd.jg.custom_figures.data.dto.ModelPartListDto
 import xd.jg.custom_figures.data.dto.TagTitleDto
@@ -26,5 +28,8 @@ interface IFigureClient {
 
     @GET("/tags")
     suspend fun getTags(): Response<List<TagTitleDto>>
+
+    @GET("/figures/{id}")
+    suspend fun getFigureById(@Path(value = "id", encoded = true) figureId: Int): Response<FigureDto>
 
 }

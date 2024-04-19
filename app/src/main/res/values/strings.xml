@@ -10,4 +10,12 @@
     <string name="your_name_string">Ваше имя</string>
     <string name="search_string">Поиск</string>
     <string name="catalog_string">Каталог</string>
+    <string name="want_my_figure_string">Хочу свою фигурку!</string>
+    <string name="cancel_string">Отмена</string>
+    <string name="text_constructor_string">По тексту</string>
+    <string name="photo_constructor_string">По фото</string>
+    <string name="which_figure_do_you_want_string">Какую фигурку вы хотите?</string>
+    <string name="which_figure_do_you_want_description_string">Мы можем создать стилизованную фигурку по Вашей фотографии, либо фигурку любого персонажа по текстовому описанию</string>
+    <string name="description_string">Описание</string>
+    <string name="tags_string">Тэги:</string>
 </resources>

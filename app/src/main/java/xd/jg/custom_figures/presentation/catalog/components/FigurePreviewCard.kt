@@ -4,6 +4,7 @@ import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -32,12 +33,14 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import coil.annotation.ExperimentalCoilApi
 import coil.compose.rememberImagePainter
 import com.tbuonomo.viewpagerdotsindicator.compose.DotsIndicator
 import com.tbuonomo.viewpagerdotsindicator.compose.model.DotGraphic
 import com.tbuonomo.viewpagerdotsindicator.compose.type.WormIndicatorType
 import xd.jg.custom_figures.data.dto.FigurePreviewDto
+import xd.jg.custom_figures.presentation.navigation.Routes
 import xd.jg.custom_figures.ui.theme.CustomPrimary
 import xd.jg.custom_figures.ui.theme.CustomPrimaryContainer
 import xd.jg.custom_figures.ui.theme.unboundedRegularFont
@@ -46,7 +49,7 @@ import xd.jg.custom_figures.utils.toTagFilter
 
 @OptIn(ExperimentalFoundationApi::class, ExperimentalCoilApi::class)
 @Composable
-fun FigureCard(figure: FigurePreviewDto) {
+fun FigurePreviewCard(navController: NavController, figure: FigurePreviewDto) {
     Card(
         colors = CardDefaults.cardColors(
             containerColor = CustomPrimary,
@@ -54,7 +57,15 @@ fun FigureCard(figure: FigurePreviewDto) {
         modifier = Modifier
             .height(230.dp)
             .width(150.dp)
-            .border(1.dp, CustomPrimary, RoundedCornerShape(ROUNDED.dp)),
+            .border(1.dp, CustomPrimary, RoundedCornerShape(ROUNDED.dp))
+            .clickable {
+                    navController.navigate(
+                        Routes.FigureDetailScreen.route.replace(
+                            "{figure_model}",
+                            figure.id.toString()
+                        )
+                    )
+                },
         shape = RoundedCornerShape(ROUNDED.dp),
     ) {
         val state = rememberPagerState(pageCount = { figure.imageLinks.size })

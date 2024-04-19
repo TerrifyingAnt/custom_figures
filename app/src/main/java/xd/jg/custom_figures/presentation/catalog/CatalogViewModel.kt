@@ -88,4 +88,13 @@ class CatalogViewModel @Inject constructor(
         }
         getFigures()
     }
+
+    /** Метод обновляет значения для показа\сокрытия диалога */
+    fun updateIsDialogShown() {
+        updateUIState {
+            copy(
+                isDialogShown = mutableStateOf(!isDialogShown.value)
+            )
+        }
+    }
 }

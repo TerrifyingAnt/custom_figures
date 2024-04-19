@@ -14,11 +14,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
 import xd.jg.custom_figures.presentation.catalog.CatalogViewModel
 import xd.jg.custom_figures.utils.Resource
 
 @Composable
 fun FigureList(
+    navController: NavController,
     viewModel: CatalogViewModel = hiltViewModel()
 ) {
     when(viewModel.catalogUIState.value.currentUIState.status) {
@@ -43,7 +45,7 @@ fun FigureList(
                 modifier = Modifier.fillMaxSize()
             ) {
                 items(figure.size) {figureId ->
-                    FigureCard(figure[figureId])
+                    FigurePreviewCard(navController, figure[figureId])
                 }
             }
         }

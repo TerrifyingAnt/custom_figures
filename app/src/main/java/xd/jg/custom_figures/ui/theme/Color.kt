@@ -27,5 +27,6 @@ val CustomOnSecondaryContainer = Color(0xff1f1048)
 val CustomTertiary = Color(0xffbfa8f1)
 val CustomInversePrimary = Color(0xffBAC3FF)
 val CustomAccent = Color(0xff4D4D4D)
-val CustomFixedDim = Color(0xffBAC3FF)
+val CustomPrimaryFixedDim = Color(0xffBAC3FF)
+val CustomTertiaryFixedDim = Color(0xffD1BCFD)
 

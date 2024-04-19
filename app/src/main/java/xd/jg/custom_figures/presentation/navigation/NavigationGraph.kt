@@ -2,8 +2,11 @@ package xd.jg.custom_figures.presentation.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.navArgument
+import xd.jg.custom_figures.presentation.FigureDetailScreen.FigureDetailScreen
 import xd.jg.custom_figures.presentation.auth_screen.AuthScreen
 import xd.jg.custom_figures.presentation.catalog.CatalogScreen
 import xd.jg.custom_figures.presentation.register_screen.RegisterScreen
@@ -13,7 +16,7 @@ fun NavigationGraph(navController: NavHostController, onBottomVisibilityChanged:
     NavHost(navController, startDestination = Routes.Auth.route) {
         composable(BottomNavigationItems.CatalogScreen.route) {
             onBottomVisibilityChanged(true)
-            CatalogScreen()
+            CatalogScreen(navController)
         }
 
         composable(BottomNavigationItems.ChatScreen.route) {
@@ -34,8 +37,22 @@ fun NavigationGraph(navController: NavHostController, onBottomVisibilityChanged:
             AuthScreen(navController)
         }
 
+        composable(
+            route = Routes.FigureDetailScreen.route,
+            arguments = listOf(navArgument("figure_model") {
+            type = NavType.IntType
+            })
+        ) {backStackEntry ->
+            val figureModelId = backStackEntry.arguments?.getInt("figure_model")
+            onBottomVisibilityChanged(true)
+            if (figureModelId != null) {
+                FigureDetailScreen(navController, figureModelId)
+            }
+
+        }
+
         composable(Routes.Register.route) {
-            onBottomVisibilityChanged(false)
+            onBottomVisibilityChanged(true)
             RegisterScreen(navController)
         }
     }
