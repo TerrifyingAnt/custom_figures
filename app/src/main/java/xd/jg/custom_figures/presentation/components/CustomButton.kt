@@ -9,6 +9,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -18,7 +19,7 @@ import xd.jg.custom_figures.ui.theme.robotoRegularFont
 import xd.jg.custom_figures.utils.Constants.ROUNDED
 
 @Composable
-fun CustomButton(buttonColor: Color, buttonText: String, onClick: () -> Unit, modifiers: Modifier) {
+fun CustomButton(buttonColor: Color, buttonText: String, onClick: () -> Unit, modifiers: Modifier, bold: Boolean = false) {
     Button(
         onClick = onClick,
         shape = RoundedCornerShape(ROUNDED.dp),
@@ -28,7 +29,7 @@ fun CustomButton(buttonColor: Color, buttonText: String, onClick: () -> Unit, mo
         ),
         modifier = modifiers
     ) {
-        Text(buttonText, fontFamily = robotoRegularFont, fontSize = 20.sp)
+        Text(buttonText, fontFamily = robotoRegularFont, fontSize = 20.sp, fontWeight = if (bold) FontWeight.Bold else FontWeight.Normal )
     }
 }
 

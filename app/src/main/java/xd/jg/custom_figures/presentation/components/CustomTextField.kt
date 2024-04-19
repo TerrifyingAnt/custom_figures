@@ -34,7 +34,7 @@ fun CustomTextField(
     modifier: Modifier = Modifier,
     hint: String,
     textValue: String,
-    keyboardType: KeyboardType = KeyboardType.Ascii,
+    keyboardType: KeyboardType = KeyboardType.Text,
     visualTransformation: VisualTransformation = VisualTransformation.None,
     onValueChanged: (String) -> Unit,
     trailingIcon: ImageVector? = null,

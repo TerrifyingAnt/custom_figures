@@ -30,19 +30,19 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import coil.annotation.ExperimentalCoilApi
 import coil.compose.rememberImagePainter
 import com.tbuonomo.viewpagerdotsindicator.compose.DotsIndicator
 import com.tbuonomo.viewpagerdotsindicator.compose.model.DotGraphic
 import com.tbuonomo.viewpagerdotsindicator.compose.type.WormIndicatorType
 import xd.jg.custom_figures.data.dto.FigurePreviewDto
-import xd.jg.custom_figures.data.dto.TagDto
 import xd.jg.custom_figures.ui.theme.CustomPrimary
 import xd.jg.custom_figures.ui.theme.CustomPrimaryContainer
 import xd.jg.custom_figures.ui.theme.unboundedRegularFont
 import xd.jg.custom_figures.utils.Constants.ROUNDED
+import xd.jg.custom_figures.utils.toTagFilter
 
 @OptIn(ExperimentalFoundationApi::class, ExperimentalCoilApi::class)
 @Composable
@@ -115,24 +115,17 @@ fun FigureCard(figure: FigurePreviewDto) {
             .padding(5.dp, 5.dp, 5.dp, 2.dp)) {
             items(figure.tags.size) { tag ->
                 CustomTag(
-                    tag = figure.tags[tag].title,
-                    onClick = { /*TODO*/ },
-                    modifiers = Modifier.wrapContentWidth()
+                    tag = figure.tags[tag].toTagFilter(),
+                    modifier = Modifier.wrapContentWidth()
                 )
                 Spacer(modifier = Modifier.size(5.dp))
             }
         }
         Row(horizontalArrangement = Arrangement.Center, modifier = Modifier.fillMaxWidth()) {
-            Text(text = figure.title, fontFamily = unboundedRegularFont, color = Color.White)
+            Text(text = figure.title, fontFamily = unboundedRegularFont, color = Color.White, fontSize = 12.sp)
         }
         Row(horizontalArrangement = Arrangement.Center, modifier = Modifier.fillMaxWidth()) {
-            Text(text = "${figure.price}₽", fontFamily = unboundedRegularFont, color = Color.White)
+            Text(text = "${figure.price}₽", fontFamily = unboundedRegularFont, color = Color.White, fontSize = 12.sp)
         }
     }
-}
-
-@Preview
-@Composable
-fun FigureCardPreview() {
-    FigureCard(FigurePreviewDto(1, "Гоша Сатору", 100f, listOf("https://64.media.tumblr.com/62ee8b8ed1b8f8c66468e79d385ee6a0/tumblr_p18opnjl8D1rm7kqjo2_1280.jpg", "https://yt3.googleusercontent.com/ytc/AGIKgqPItmnFwqdWPusJ2ZpLn0NX5tYtBfmp5xFTQFkq=s900-c-k-c0x00ffffff-no-rj"), mutableListOf(TagDto(1, "Онеме"), TagDto(2, "Some cringe"))))
 }
