@@ -18,4 +18,7 @@
     <string name="which_figure_do_you_want_description_string">Мы можем создать стилизованную фигурку по Вашей фотографии, либо фигурку любого персонажа по текстовому описанию</string>
     <string name="description_string">Описание</string>
     <string name="tags_string">Тэги:</string>
+    <string name="turn_back_string">Перевернуть обратно</string>
+    <string name="figure_string">Фигурка</string>
+    <string name="figure_is_loading_string">Модель загружается, пожалуйста, подождите</string>
 </resources>

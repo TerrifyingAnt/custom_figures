@@ -109,8 +109,11 @@ dependencies {
     // cool dots
     implementation("com.tbuonomo:dotsindicator:5.0")
 
-    // coll shimmering effect
+    // cool shimmering effect
     implementation("com.valentinilk.shimmer:compose-shimmer:1.3.0")
+
+    // dont do a flip
+    implementation ("com.wajahatkarim:flippable:1.5.4")
 
 
 

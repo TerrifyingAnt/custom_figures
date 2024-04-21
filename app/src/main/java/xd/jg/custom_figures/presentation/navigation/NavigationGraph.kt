@@ -6,9 +6,9 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
-import xd.jg.custom_figures.presentation.FigureDetailScreen.FigureDetailScreen
 import xd.jg.custom_figures.presentation.auth_screen.AuthScreen
-import xd.jg.custom_figures.presentation.catalog.CatalogScreen
+import xd.jg.custom_figures.presentation.catalog_screen.CatalogScreen
+import xd.jg.custom_figures.presentation.figure_detail_screen.FigureDetailScreen
 import xd.jg.custom_figures.presentation.register_screen.RegisterScreen
 
 @Composable

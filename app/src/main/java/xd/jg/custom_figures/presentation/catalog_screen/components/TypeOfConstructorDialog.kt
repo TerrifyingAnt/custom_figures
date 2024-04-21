@@ -1,4 +1,4 @@
-package xd.jg.custom_figures.presentation.catalog.components
+package xd.jg.custom_figures.presentation.catalog_screen.components
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -21,7 +21,7 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.hilt.navigation.compose.hiltViewModel
 import xd.jg.custom_figures.R
-import xd.jg.custom_figures.presentation.catalog.CatalogViewModel
+import xd.jg.custom_figures.presentation.catalog_screen.CatalogViewModel
 import xd.jg.custom_figures.presentation.components.CustomButton
 import xd.jg.custom_figures.ui.theme.CustomOnPrimaryContainer
 import xd.jg.custom_figures.ui.theme.CustomPrimaryContainer

@@ -37,7 +37,7 @@ import kotlin.time.DurationUnit
 
 
 @Composable
-fun FullModelViewer(nullFraction: Float? = 1f, baseState: Boolean?, mainScreenViewModel: MainScreenViewModel = hiltViewModel()) {
+fun FullModelViewer(nullFraction: Float? = 1f, baseState: Boolean? = false, mainScreenViewModel: MainScreenViewModel = hiltViewModel()) {
     val fraction = nullFraction ?: 1f
     val downloadState by mainScreenViewModel.downloadStateFigure.collectAsState()
     var listOfPaths = ""

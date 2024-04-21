@@ -1,4 +1,4 @@
-package xd.jg.custom_figures.presentation.catalog
+package xd.jg.custom_figures.presentation.catalog_screen
 
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf

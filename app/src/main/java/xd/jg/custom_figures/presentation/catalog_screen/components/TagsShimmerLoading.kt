@@ -1,4 +1,4 @@
-package xd.jg.custom_figures.presentation.catalog.components
+package xd.jg.custom_figures.presentation.catalog_screen.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box

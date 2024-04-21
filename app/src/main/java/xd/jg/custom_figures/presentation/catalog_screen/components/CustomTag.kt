@@ -1,4 +1,4 @@
-package xd.jg.custom_figures.presentation.catalog.components
+package xd.jg.custom_figures.presentation.catalog_screen.components
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement

@@ -1,4 +1,4 @@
-package xd.jg.custom_figures.presentation.catalog.components
+package xd.jg.custom_figures.presentation.catalog_screen.components
 
 import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
@@ -12,7 +12,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import xd.jg.custom_figures.presentation.catalog.CatalogViewModel
+import xd.jg.custom_figures.presentation.catalog_screen.CatalogViewModel
 import xd.jg.custom_figures.utils.Resource
 
 @Composable

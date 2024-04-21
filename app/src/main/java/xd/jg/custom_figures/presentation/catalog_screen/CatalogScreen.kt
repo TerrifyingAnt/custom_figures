@@ -1,4 +1,4 @@
-package xd.jg.custom_figures.presentation.catalog
+package xd.jg.custom_figures.presentation.catalog_screen
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -18,9 +18,9 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import xd.jg.custom_figures.R
-import xd.jg.custom_figures.presentation.catalog.components.FigureList
-import xd.jg.custom_figures.presentation.catalog.components.FilterList
-import xd.jg.custom_figures.presentation.catalog.components.TypeOfConstructorDialog
+import xd.jg.custom_figures.presentation.catalog_screen.components.FigureList
+import xd.jg.custom_figures.presentation.catalog_screen.components.FilterList
+import xd.jg.custom_figures.presentation.catalog_screen.components.TypeOfConstructorDialog
 import xd.jg.custom_figures.presentation.components.CustomButton
 import xd.jg.custom_figures.presentation.components.CustomTextField
 import xd.jg.custom_figures.ui.theme.CustomAccent
