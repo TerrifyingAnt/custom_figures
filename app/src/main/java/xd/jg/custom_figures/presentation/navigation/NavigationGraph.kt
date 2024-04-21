@@ -9,6 +9,7 @@ import androidx.navigation.navArgument
 import xd.jg.custom_figures.presentation.auth_screen.AuthScreen
 import xd.jg.custom_figures.presentation.catalog_screen.CatalogScreen
 import xd.jg.custom_figures.presentation.figure_detail_screen.FigureDetailScreen
+import xd.jg.custom_figures.presentation.model_from_photo_constructor_screen.ModelFromPhotoConstructorScreen
 import xd.jg.custom_figures.presentation.register_screen.RegisterScreen
 
 @Composable
@@ -48,12 +49,16 @@ fun NavigationGraph(navController: NavHostController, onBottomVisibilityChanged:
             if (figureModelId != null) {
                 FigureDetailScreen(navController, figureModelId)
             }
-
         }
 
         composable(Routes.Register.route) {
             onBottomVisibilityChanged(true)
             RegisterScreen(navController)
+        }
+
+        composable(Routes.ModelFromPhotoConstructorScreen.route) {
+            onBottomVisibilityChanged(false)
+            ModelFromPhotoConstructorScreen(navController)
         }
     }
 

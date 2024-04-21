@@ -1,4 +1,4 @@
-package xd.jg.custom_figures.presentation.main_screen.components
+package xd.jg.custom_figures.presentation.model_from_photo_constructor_screen.components
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -14,8 +14,8 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
-import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -24,17 +24,18 @@ import com.github.skydoves.colorpicker.compose.BrightnessSlider
 import com.github.skydoves.colorpicker.compose.ColorEnvelope
 import com.github.skydoves.colorpicker.compose.HsvColorPicker
 import com.github.skydoves.colorpicker.compose.rememberColorPickerController
-import xd.jg.custom_figures.presentation.main_screen.MainScreenViewModel
+import xd.jg.custom_figures.presentation.model_from_photo_constructor_screen.ModelFromPhotoConstructorViewModel
+import xd.jg.custom_figures.ui.theme.unboundedBoldFont
 
 
 @Composable
-fun ColorPicker(mainScreenViewModel: MainScreenViewModel = hiltViewModel()
+fun ColorPicker(modelFromPhotoConstructorViewModel: ModelFromPhotoConstructorViewModel = hiltViewModel()
 ) {
-
-    Column(modifier = Modifier.fillMaxSize()) {
+    Column(modifier = Modifier.fillMaxSize())
+    {
         val controller = rememberColorPickerController()
         Row(horizontalArrangement = Arrangement.Center, modifier = Modifier.fillMaxWidth()) {
-            Text("Выбор цвета", fontSize = 20.sp, fontFamily = FontFamily.SansSerif)
+            Text("Выбор цвета", fontSize = 20.sp, fontFamily = unboundedBoldFont, color = Color.White)
         }
         Row(horizontalArrangement = Arrangement.Center, modifier = Modifier.fillMaxWidth()) {
             HsvColorPicker(
@@ -44,7 +45,7 @@ fun ColorPicker(mainScreenViewModel: MainScreenViewModel = hiltViewModel()
                     .padding(5.dp),
                 controller = controller,
                 onColorChanged = { colorEnvelope: ColorEnvelope ->
-                    mainScreenViewModel.changeSkyBoxColor(colorEnvelope.color)
+                    modelFromPhotoConstructorViewModel.changeSkyBoxColor(colorEnvelope.color)
                 }
             )
         }
@@ -58,7 +59,7 @@ fun ColorPicker(mainScreenViewModel: MainScreenViewModel = hiltViewModel()
             )
         }
         Row(horizontalArrangement = Arrangement.Center, modifier = Modifier.fillMaxWidth()) {
-            Text("#${Integer.toHexString(controller.selectedColor.value.toArgb()).uppercase()}", color=controller.selectedColor.value)
+            Text("#${Integer.toHexString(controller.selectedColor.value.toArgb()).uppercase()}", color=controller.selectedColor.value, fontFamily = unboundedBoldFont, fontSize = 16.sp)
         }
         Row(horizontalArrangement = Arrangement.Center, modifier = Modifier.fillMaxWidth()) {
             AlphaTile(

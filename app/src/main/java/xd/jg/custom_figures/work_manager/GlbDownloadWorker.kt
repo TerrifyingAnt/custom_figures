@@ -10,7 +10,7 @@ import androidx.work.workDataOf
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
 import okhttp3.ResponseBody
-import xd.jg.custom_figures.domain.remote.IFigureRepository
+import xd.jg.custom_figures.domain.remote.IPhotoConstructorRepository
 import xd.jg.custom_figures.utils.Resource
 import java.io.File
 import java.io.FileOutputStream
@@ -20,7 +20,7 @@ import java.util.UUID
 class GlbDownloadWorker @AssistedInject constructor(
     @Assisted context: Context,
     @Assisted workerParams: WorkerParameters,
-    private val iFigureRepository: IFigureRepository
+    private val iPhotoConstructorRepository: IPhotoConstructorRepository
 ):
     CoroutineWorker(context, workerParams) {
 
@@ -32,7 +32,7 @@ class GlbDownloadWorker @AssistedInject constructor(
     }
 
     private suspend fun downloadFile(fileUrl: String, fileName: String): Result {
-        val response = iFigureRepository.getModel(fileUrl)
+        val response = iPhotoConstructorRepository.getModel(fileUrl)
         return if (response.status == Resource.Status.SUCCESS) {
             if (response.data != null) {
                 val filePath = saveFile(response.data, fileName)

@@ -1,4 +1,4 @@
-package xd.jg.custom_figures.presentation.main_screen.components
+package xd.jg.custom_figures.presentation.model_from_photo_constructor_screen.components
 
 import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -7,21 +7,26 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import xd.jg.custom_figures.presentation.main_screen.MainScreenViewModel
+import xd.jg.custom_figures.presentation.model_from_photo_constructor_screen.ModelFromPhotoConstructorViewModel
+import xd.jg.custom_figures.ui.theme.CustomTertiary
+import xd.jg.custom_figures.utils.Constants.ROUNDED
 
 @Composable
-fun CenteredInRowButton(rowHeight: Float, buttonSize: Float, buttonText: String, mainScreenViewModel: MainScreenViewModel = hiltViewModel()) {
+fun CenteredInRowButton(rowHeight: Float, buttonSize: Float, buttonText: String, modelFromPhotoConstructorViewModel: ModelFromPhotoConstructorViewModel = hiltViewModel()) {
     val applicationContext = LocalContext.current.applicationContext
     val context = LocalContext.current
     val launcher = rememberLauncherForActivityResult(ActivityResultContracts.TakePicturePreview()) { bitmap ->
         if (bitmap != null) {
-            mainScreenViewModel.savePhoto(context, applicationContext, bitmap)
+            modelFromPhotoConstructorViewModel.savePhoto(context, applicationContext, bitmap)
         } else {
             Toast.makeText(context, "Что-то пошло не так", Toast.LENGTH_SHORT).show()
         }
@@ -33,6 +38,10 @@ fun CenteredInRowButton(rowHeight: Float, buttonSize: Float, buttonText: String,
             .fillMaxHeight(rowHeight)
     ) {
         Button(
+            shape = RoundedCornerShape(ROUNDED.dp),
+            colors = ButtonDefaults.buttonColors(
+                containerColor = CustomTertiary
+            ),
             onClick = {
                 launcher.launch(null) // Launch the camera activity
             },

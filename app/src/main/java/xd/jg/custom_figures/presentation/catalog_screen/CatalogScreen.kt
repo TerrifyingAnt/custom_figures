@@ -79,7 +79,7 @@ fun CatalogScreen(
 
     when {
         viewModel.catalogUIState.value.isDialogShown.value -> {
-            TypeOfConstructorDialog()
+            TypeOfConstructorDialog(navController)
         }
     }
 }

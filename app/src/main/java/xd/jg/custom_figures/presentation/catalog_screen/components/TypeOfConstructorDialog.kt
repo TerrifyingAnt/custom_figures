@@ -15,14 +15,15 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
 import xd.jg.custom_figures.R
 import xd.jg.custom_figures.presentation.catalog_screen.CatalogViewModel
 import xd.jg.custom_figures.presentation.components.CustomButton
+import xd.jg.custom_figures.presentation.navigation.Routes
 import xd.jg.custom_figures.ui.theme.CustomOnPrimaryContainer
 import xd.jg.custom_figures.ui.theme.CustomPrimaryContainer
 import xd.jg.custom_figures.ui.theme.CustomPrimaryFixedDim
@@ -32,6 +33,7 @@ import xd.jg.custom_figures.utils.Constants.ROUNDED
 
 @Composable
 fun TypeOfConstructorDialog(
+    navController: NavController,
     viewModel: CatalogViewModel = hiltViewModel()
 ) {
     Dialog(onDismissRequest = {viewModel.updateIsDialogShown()}) {
@@ -64,7 +66,7 @@ fun TypeOfConstructorDialog(
                     CustomButton(
                         buttonColor = CustomPrimaryFixedDim,
                         buttonText = stringResource(id = R.string.text_constructor_string),
-                        onClick = { /*TODO*/ },
+                        onClick = { viewModel.updateIsDialogShown() },
                         modifiers = Modifier.fillMaxWidth(0.8f)
                     )
                 }
@@ -72,7 +74,9 @@ fun TypeOfConstructorDialog(
                     CustomButton(
                         buttonColor = CustomPrimaryFixedDim,
                         buttonText = stringResource(id = R.string.photo_constructor_string),
-                        onClick = { /*TODO*/ },
+                        onClick = {
+                            viewModel.updateIsDialogShown()
+                            navController.navigate(Routes.ModelFromPhotoConstructorScreen.route) },
                         modifiers = Modifier.fillMaxWidth(0.8f)
                     )
                 }
@@ -88,10 +92,4 @@ fun TypeOfConstructorDialog(
             }
         }
     }
-}
-
-@Composable
-@Preview
-fun TypeOfConstructorDialogPreview() {
-    TypeOfConstructorDialog()
 }

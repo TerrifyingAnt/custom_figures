@@ -1,4 +1,4 @@
-package xd.jg.custom_figures.presentation.main_screen.components
+package xd.jg.custom_figures.presentation.model_from_photo_constructor_screen.components
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
@@ -16,7 +16,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import coil.annotation.ExperimentalCoilApi
 import coil.compose.rememberImagePainter
-import xd.jg.custom_figures.presentation.main_screen.models.PartModelData
+import xd.jg.custom_figures.presentation.model_from_photo_constructor_screen.models.PartModelData
 
 @OptIn(ExperimentalCoilApi::class)
 @Composable

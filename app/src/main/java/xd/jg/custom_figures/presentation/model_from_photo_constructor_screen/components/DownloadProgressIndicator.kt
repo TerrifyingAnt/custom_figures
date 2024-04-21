@@ -1,4 +1,4 @@
-package xd.jg.custom_figures.presentation.main_screen.components
+package xd.jg.custom_figures.presentation.model_from_photo_constructor_screen.components
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.MutableTransitionState
@@ -17,7 +17,6 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.State
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -27,22 +26,22 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import xd.jg.custom_figures.presentation.main_screen.MainScreenViewModel
+import xd.jg.custom_figures.presentation.model_from_photo_constructor_screen.ModelFromPhotoConstructorViewModel
 import xd.jg.custom_figures.utils.Resource
 
 @Composable
 fun DownloadProgressIndicator(
-    modelState: State<Resource<String>>,
-    mainScreenViewModel: MainScreenViewModel = hiltViewModel()
+    modelState: Resource<String>,
+    modelFromPhotoConstructorViewModel: ModelFromPhotoConstructorViewModel = hiltViewModel()
 ) {
     val currentState = MutableTransitionState(false)
     val applicationContext = LocalContext.current.applicationContext
 
     currentState.targetState = true
-    when (modelState.value.status) {
+    when (modelState.status) {
         Resource.Status.LOADING -> {
-                val currentProgress = modelState.value.data ?: return
-                if (currentProgress.toFloat() != 0f) {
+                val currentProgress = modelState.data ?: return
+                if (currentProgress != "null" && currentProgress.toFloat() != 0f) {
                     Box(
                         modifier = Modifier
                             .fillMaxSize()
@@ -108,7 +107,7 @@ fun DownloadProgressIndicator(
                 modifier = Modifier
                     .fillMaxSize()
                     .clickable {
-                        mainScreenViewModel.retryDownloadGlbFile(applicationContext, modelState.value.data ?: "")
+                        modelFromPhotoConstructorViewModel.retryDownloadGlbFile(applicationContext, modelState.data ?: "")
                         currentState.targetState = false
                                },
                 contentAlignment = Alignment.Center

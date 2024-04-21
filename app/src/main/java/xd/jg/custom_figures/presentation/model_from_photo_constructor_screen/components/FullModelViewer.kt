@@ -1,4 +1,4 @@
-package xd.jg.custom_figures.presentation.main_screen.components
+package xd.jg.custom_figures.presentation.model_from_photo_constructor_screen.components
 
 import android.util.Log
 import android.widget.Toast
@@ -29,7 +29,7 @@ import io.github.sceneview.rememberEnvironmentLoader
 import io.github.sceneview.rememberModelLoader
 import io.github.sceneview.rememberNode
 import io.github.sceneview.rememberNodes
-import xd.jg.custom_figures.presentation.main_screen.MainScreenViewModel
+import xd.jg.custom_figures.presentation.model_from_photo_constructor_screen.ModelFromPhotoConstructorViewModel
 import xd.jg.custom_figures.utils.Resource
 import java.io.File
 import kotlin.time.Duration.Companion.seconds
@@ -37,15 +37,12 @@ import kotlin.time.DurationUnit
 
 
 @Composable
-fun FullModelViewer(nullFraction: Float? = 1f, baseState: Boolean? = false, mainScreenViewModel: MainScreenViewModel = hiltViewModel()) {
+fun FullModelViewer(
+    nullFraction: Float? = 1f,
+    viewModel: ModelFromPhotoConstructorViewModel = hiltViewModel()) {
     val fraction = nullFraction ?: 1f
-    val downloadState by mainScreenViewModel.downloadStateFigure.collectAsState()
-    var listOfPaths = ""
-    if (baseState == true){
-        listOfPaths = mainScreenViewModel.getPaths(LocalContext.current.applicationContext)
-    }
 
-    val skyBoxUserScreen by mainScreenViewModel.skyBoxUserScreen.collectAsState()
+    val skyBoxUserScreen by viewModel.skyBoxUserScreen.collectAsState()
 
     val context = LocalContext.current
 
@@ -82,11 +79,8 @@ fun FullModelViewer(nullFraction: Float? = 1f, baseState: Boolean? = false, main
                     animation = tween(durationMillis = 7.seconds.toInt(DurationUnit.MILLISECONDS))
                 )
             )
-
             var bodyNode: ModelNode
-
             var hairNode: ModelNode
-
             var eyesNode: ModelNode
 
             Scene(
@@ -103,65 +97,60 @@ fun FullModelViewer(nullFraction: Float? = 1f, baseState: Boolean? = false, main
                     cameraNode.lookAt(Position(x = 0f, y = 1.5f, z = 0f))
                 },
                 onViewUpdated = {
-                    if (baseState == true) {
-                        this.clearChildNodes()
-                        hairNode = ModelNode(
-                            modelInstance = modelLoader.createModelInstance(
-                                file = File("$listOfPaths/hair")
-                            ),
-                        )
-
-                        eyesNode = ModelNode(
-                            modelInstance = modelLoader.createModelInstance(
-                                file = File("$listOfPaths/eye")
-                            ),
-                        )
-
-                        bodyNode = ModelNode(
-                            modelInstance = modelLoader.createModelInstance(
-                                file = File("$listOfPaths/body")
-                            ),
-                        )
-                        this.addChildNodes(listOf(centerNode, hairNode, eyesNode, bodyNode))
-                    }
-                    when (downloadState.status) {
+                    when (viewModel.modelFromPhotoConstructorUIState.value.figure.status) {
                         Resource.Status.SUCCESS -> {
-                            this.clearChildNodes()
-                            hairNode = ModelNode(
-                                modelInstance = modelLoader.createModelInstance(
-                                    file = File(mainScreenViewModel.mainScreenUIState.value.hair)
-                                ),
-                            )
+                            if (viewModel.modelFromPhotoConstructorUIState.value.hair.status == Resource.Status.SUCCESS &&
+                                viewModel.modelFromPhotoConstructorUIState.value.eyes.status == Resource.Status.SUCCESS &&
+                                viewModel.modelFromPhotoConstructorUIState.value.body.status == Resource.Status.SUCCESS) {
+                                val nonNullHair =
+                                    viewModel.modelFromPhotoConstructorUIState.value.hair.data
+                                        ?: return@Scene
+                                val nonNullEyes =
+                                    viewModel.modelFromPhotoConstructorUIState.value.eyes.data
+                                        ?: return@Scene
+                                val nonNullBody =
+                                    viewModel.modelFromPhotoConstructorUIState.value.body.data
+                                        ?: return@Scene
+                                this.clearChildNodes()
+                                hairNode = ModelNode(
+                                    modelInstance = modelLoader.createModelInstance(
+                                        file = File(nonNullHair)
+                                    ),
+                                )
 
-                            eyesNode = ModelNode(
-                                modelInstance = modelLoader.createModelInstance(
-                                    file = File(mainScreenViewModel.mainScreenUIState.value.eyes)
-                                ),
-                            )
+                                eyesNode = ModelNode(
+                                    modelInstance = modelLoader.createModelInstance(
+                                        file = File(nonNullEyes)
+                                    ),
+                                )
 
-                            bodyNode = ModelNode(
-                                modelInstance = modelLoader.createModelInstance(
-                                    file = File(mainScreenViewModel.mainScreenUIState.value.body)
-                                ),
-                            )
-                            this.addChildNodes(listOf(centerNode, hairNode, eyesNode, bodyNode))
+                                bodyNode = ModelNode(
+                                    modelInstance = modelLoader.createModelInstance(
+                                        file = File(nonNullBody)
+                                    ),
+                                )
+                                this.addChildNodes(listOf(centerNode, hairNode, eyesNode, bodyNode))
+                            }
                         }
                         Resource.Status.LOADING -> {
-
                         }
                         Resource.Status.ERROR -> {
-                            Toast.makeText(context, "${downloadState.message}" , Toast.LENGTH_SHORT).show()
+                            Toast.makeText(context, "${viewModel.modelFromPhotoConstructorUIState.value.figure.message}" , Toast.LENGTH_SHORT).show()
                             Log.d("CRINGE_ERROR", "XD")
                         }
                     }
 
-                    when (skyBoxUserScreen.status) {
-                        Resource.Status.SUCCESS -> {
-                            val newColor = skyBoxUserScreen.data ?: return@Scene
-                            scene.skybox?.setColor(newColor.red, newColor.green, newColor.blue, newColor.alpha)
+                    val newColor = viewModel.modelFromPhotoConstructorUIState.value.skyBoxColor.value
+                    scene.skybox?.setColor(newColor.red, newColor.green, newColor.blue, newColor.alpha)
 
+
+                    when {
+                        viewModel.modelFromPhotoConstructorUIState.value.clearScene.value -> {
+                            clearChildNodes()
+                            clearAnimation()
+                            destroy()
+                            viewModel.updateCanGoState()
                         }
-                        else -> {}
                     }
                 }
             )
