@@ -29,4 +29,5 @@ val CustomInversePrimary = Color(0xffBAC3FF)
 val CustomAccent = Color(0xff4D4D4D)
 val CustomPrimaryFixedDim = Color(0xffBAC3FF)
 val CustomTertiaryFixedDim = Color(0xffD1BCFD)
+val CustomCoolGreen = Color(0xFF80DF64)
 

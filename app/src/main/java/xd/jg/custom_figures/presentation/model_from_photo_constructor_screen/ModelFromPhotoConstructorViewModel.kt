@@ -14,9 +14,7 @@ import androidx.work.WorkInfo
 import androidx.work.WorkManager
 import androidx.work.workDataOf
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
@@ -45,8 +43,6 @@ class ModelFromPhotoConstructorViewModel @Inject constructor(
         _modelFromPhotoConstructorUIState.value = _modelFromPhotoConstructorUIState.value.update()
     }
 
-    private val _skyBoxUserScreen = MutableStateFlow<Resource<Color>>(Resource.loading(Color(255, 255, 255, 255)))
-    val skyBoxUserScreen: StateFlow<Resource<Color>> = _skyBoxUserScreen
 
 
     /** метод сохранения и отправки фотографии */
@@ -65,6 +61,8 @@ class ModelFromPhotoConstructorViewModel @Inject constructor(
 
         updateUIState {
             copy(
+                deleteModel = mutableStateOf(false),
+                figure = Resource.loading(null),
                 photoWasMade = mutableStateOf(true),
                 photoUri = mutableStateOf(imageFile.absolutePath)
             )
@@ -87,7 +85,6 @@ class ModelFromPhotoConstructorViewModel @Inject constructor(
             downloadGlbFile(applicationContext, response.data.eye, "eye", _modelFromPhotoConstructorUIState.value.eyes)
             downloadGlbFile(applicationContext, response.data.hair, "hair", _modelFromPhotoConstructorUIState.value.hair)
             downloadGlbFile(applicationContext, response.data.body, "body", _modelFromPhotoConstructorUIState.value.body)
-
         }
 
     }
@@ -109,12 +106,22 @@ class ModelFromPhotoConstructorViewModel @Inject constructor(
                 )
             }
         }
+        if (photoWasMade) {
             updateUIState {
                 copy(
                     photoWasMade = mutableStateOf(photoWasMade),
                     figure = Resource.success(photoWasMade)
                 )
             }
+        }
+        else {
+            updateUIState {
+                copy(
+                    photoWasMade = mutableStateOf(photoWasMade),
+                    figure = Resource.loading(photoWasMade)
+                )
+            }
+        }
     }
 
     fun getPaths(applicationContext: Context): String {
@@ -201,6 +208,39 @@ class ModelFromPhotoConstructorViewModel @Inject constructor(
         }
     }
 
+    fun deleteModel() {
+        updateUIState {
+            copy(
+                deleteModel = mutableStateOf(true)
+            )
+        }
+    }
+
+    fun clearScene(context: Context) {
+        updateUIState {
+            copy(
+                figure = Resource.loading(),
+                body = Resource.loading(),
+                hair = Resource.loading(),
+                eyes = Resource.loading(),
+                photoWasMade = mutableStateOf(false)
+            )
+        }
+        val currentPath = getPaths(context)
+        val body = File("$currentPath/body")
+        val hair = File("$currentPath/hair")
+        val eyes = File("$currentPath/eye")
+        if (body.exists()) {
+            body.delete()
+        }
+        if (hair.exists()) {
+            hair.delete()
+        }
+        if (eyes.exists()) {
+            eyes.delete()
+        }
+    }
+
 
     fun retryDownloadGlbFile(applicationContext: Context, name: String) = viewModelScope.launch {
         if (name == "body") {
@@ -215,7 +255,7 @@ class ModelFromPhotoConstructorViewModel @Inject constructor(
             }
         }
     }
-    fun changeSkyBoxColor(color: Color) = viewModelScope.launch {
+    fun changeSkyBoxColor(color: Color) {
         updateUIState {
             copy (
                 skyBoxColor = mutableStateOf(color)
@@ -283,6 +323,22 @@ class ModelFromPhotoConstructorViewModel @Inject constructor(
         updateUIState {
             copy (
                 canGo = mutableStateOf(true)
+            )
+        }
+    }
+
+    fun updateIsDialogShown() {
+        updateUIState {
+            copy (
+                isDialogShown = mutableStateOf(!isDialogShown.value)
+            )
+        }
+    }
+
+    fun updateIsModelRotating(state: Boolean) {
+        updateUIState {
+            copy (
+                isModelRotating = mutableStateOf(state)
             )
         }
     }

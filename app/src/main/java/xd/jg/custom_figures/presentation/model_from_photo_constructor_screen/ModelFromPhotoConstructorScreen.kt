@@ -23,19 +23,22 @@ import androidx.compose.material3.rememberStandardBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import xd.jg.custom_figures.R
-import xd.jg.custom_figures.presentation.model_from_photo_constructor_screen.components.ColorPicker
 import xd.jg.custom_figures.presentation.model_from_photo_constructor_screen.components.MenuButton
+import xd.jg.custom_figures.presentation.model_from_photo_constructor_screen.components.MenuContent
 import xd.jg.custom_figures.presentation.model_from_photo_constructor_screen.components.ModelFromPhotoConstructorContent
 import xd.jg.custom_figures.presentation.navigation.BottomNavigationItems
-import xd.jg.custom_figures.ui.theme.CustomPrimary
+import xd.jg.custom_figures.ui.theme.CustomPrimaryContainer
 import xd.jg.custom_figures.ui.theme.CustomSecondary
 import xd.jg.custom_figures.ui.theme.unboundedBoldFont
+import xd.jg.custom_figures.utils.Constants.ROUNDED
+import xd.jg.custom_figures.utils.Resource
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -68,10 +71,10 @@ fun ModelFromPhotoConstructorScreen(
                     .fillMaxHeight(0.8f) // Set the maximum height of the bottom sheet
                     .padding(16.dp)
             ) {
-                ColorPicker()
+                MenuContent()
             }
         },
-        sheetContainerColor = CustomPrimary,
+        sheetContainerColor = CustomPrimaryContainer,
         sheetPeekHeight = 0.dp,
         sheetShape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp)
     ) {
@@ -94,9 +97,13 @@ fun ModelFromPhotoConstructorScreen(
                         )
                     }
                 },
-                actions = { MenuButton(scope, scaffoldState) }
+                actions = { when {
+                    viewModel.modelFromPhotoConstructorUIState.value.figure.status == Resource.Status.SUCCESS ->
+                        MenuButton (scope, scaffoldState)
+                    }
+                }
             )
-            Box() {
+            Box(modifier = Modifier.clip(RoundedCornerShape(ROUNDED.dp))) {
                 ModelFromPhotoConstructorContent()
             }
         }

@@ -27,6 +27,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import xd.jg.custom_figures.presentation.model_from_photo_constructor_screen.ModelFromPhotoConstructorViewModel
+import xd.jg.custom_figures.ui.theme.CustomCoolGreen
+import xd.jg.custom_figures.ui.theme.CustomError
 import xd.jg.custom_figures.utils.Resource
 
 @Composable
@@ -95,7 +97,7 @@ fun DownloadProgressIndicator(
                         Icons.Rounded.CheckCircle,
                         contentDescription = "xd",
                         modifier = Modifier.fillMaxSize(),
-                        tint = Color.Green
+                        tint = CustomCoolGreen
                     )
                 }
             }
@@ -122,7 +124,7 @@ fun DownloadProgressIndicator(
                         Icons.Rounded.Warning,
                         contentDescription = "xd",
                         modifier = Modifier.fillMaxSize(),
-                        tint = Color.Red
+                        tint = CustomError
                     )
                 }
             }

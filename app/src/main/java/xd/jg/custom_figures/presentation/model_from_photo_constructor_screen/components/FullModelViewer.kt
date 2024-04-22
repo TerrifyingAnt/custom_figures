@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -42,8 +41,6 @@ fun FullModelViewer(
     viewModel: ModelFromPhotoConstructorViewModel = hiltViewModel()) {
     val fraction = nullFraction ?: 1f
 
-    val skyBoxUserScreen by viewModel.skyBoxUserScreen.collectAsState()
-
     val context = LocalContext.current
 
     Row(verticalAlignment = Alignment.Top, modifier = Modifier
@@ -60,7 +57,7 @@ fun FullModelViewer(
             )
 
             val skybox = Skybox.Builder().build(engine)
-            val color = skyBoxUserScreen.data ?: Color(255, 255, 255, 255)
+            val color = viewModel.modelFromPhotoConstructorUIState.value.skyBoxColor.value
             skybox.setColor(color.red, color.green, color.blue, color.alpha)
             val indirectLight = env?.indirectLight
             indirectLight?.intensity = 50_000f
@@ -93,15 +90,23 @@ fun FullModelViewer(
                 environment = coolEnv,
 
                 onFrame = {
-                    centerNode.rotation = cameraRotation
-                    cameraNode.lookAt(Position(x = 0f, y = 1.5f, z = 0f))
+                    when (viewModel.modelFromPhotoConstructorUIState.value.isModelRotating.value) {
+                        true -> {
+                            centerNode.rotation = cameraRotation
+                            cameraNode.lookAt(Position(x = 0f, y = 1.5f, z = 0f))
+                        }
+                        false -> {
+                            cameraNode.lookAt(Position(x = 0f, y = 1.5f, z = 0f))
+                        }
+                    }
                 },
                 onViewUpdated = {
                     when (viewModel.modelFromPhotoConstructorUIState.value.figure.status) {
                         Resource.Status.SUCCESS -> {
                             if (viewModel.modelFromPhotoConstructorUIState.value.hair.status == Resource.Status.SUCCESS &&
                                 viewModel.modelFromPhotoConstructorUIState.value.eyes.status == Resource.Status.SUCCESS &&
-                                viewModel.modelFromPhotoConstructorUIState.value.body.status == Resource.Status.SUCCESS) {
+                                viewModel.modelFromPhotoConstructorUIState.value.body.status == Resource.Status.SUCCESS)
+                            {
                                 val nonNullHair =
                                     viewModel.modelFromPhotoConstructorUIState.value.hair.data
                                         ?: return@Scene
@@ -143,6 +148,14 @@ fun FullModelViewer(
                     val newColor = viewModel.modelFromPhotoConstructorUIState.value.skyBoxColor.value
                     scene.skybox?.setColor(newColor.red, newColor.green, newColor.blue, newColor.alpha)
 
+                    when {
+                        viewModel.modelFromPhotoConstructorUIState.value.deleteModel.value -> {
+                            clearChildNodes()
+                            clearAnimation()
+                            destroy()
+                            viewModel.clearScene(context)
+                        }
+                    }
 
                     when {
                         viewModel.modelFromPhotoConstructorUIState.value.clearScene.value -> {

@@ -48,6 +48,11 @@ fun ModelFromPhotoConstructorContent(
                                 fontSize = 24.sp,
                                 color = CustomPrimary
                             )
+                            when {
+                                viewModel.modelFromPhotoConstructorUIState.value.clearScene.value -> {
+                                    viewModel.updateCanGoState()
+                                }
+                            }
                         }
                     }
                 }
