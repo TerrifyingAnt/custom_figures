@@ -7,6 +7,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import xd.jg.custom_figures.presentation.auth_screen.AuthScreen
+import xd.jg.custom_figures.presentation.basket_screen.BasketScreen
 import xd.jg.custom_figures.presentation.catalog_screen.CatalogScreen
 import xd.jg.custom_figures.presentation.figure_detail_screen.FigureDetailScreen
 import xd.jg.custom_figures.presentation.model_from_photo_constructor_screen.ModelFromPhotoConstructorScreen
@@ -31,6 +32,7 @@ fun NavigationGraph(navController: NavHostController, onBottomVisibilityChanged:
 
         composable(BottomNavigationItems.BasketScreen.route) {
             onBottomVisibilityChanged(true)
+            BasketScreen()
         }
 
         composable(Routes.Auth.route) {
@@ -55,6 +57,7 @@ fun NavigationGraph(navController: NavHostController, onBottomVisibilityChanged:
             onBottomVisibilityChanged(true)
             RegisterScreen(navController)
         }
+
 
         composable(Routes.ModelFromPhotoConstructorScreen.route) {
             onBottomVisibilityChanged(false)

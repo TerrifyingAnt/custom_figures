@@ -10,6 +10,7 @@ import androidx.core.graphics.red
 import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.intPreferencesKey
+import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.Flow
@@ -29,6 +30,9 @@ class DataStoreManager @Inject constructor(
         private val SKYBOX_COLOR_G = intPreferencesKey("skybox_color_g")
         private val SKYBOX_COLOR_B = intPreferencesKey("skybox_color_b")
         private val SKYBOX_COLOR_A = intPreferencesKey("skybox_color_a")
+        private val HAIR_LINK = stringPreferencesKey("hair_link")
+        private val EYE_LINK = stringPreferencesKey("eye_link")
+        private val BODY_LINK = stringPreferencesKey("body_link")
 
     }
 
@@ -58,6 +62,44 @@ class DataStoreManager @Inject constructor(
             Color(localStorage[SKYBOX_COLOR_R] ?: 0, localStorage[SKYBOX_COLOR_G] ?: 0, localStorage[SKYBOX_COLOR_B] ?: 0, localStorage[SKYBOX_COLOR_A] ?: 0)
         }
     }
+
+    suspend fun setHairLink(hairLink: String) {
+        appContext.dataStore.edit { localStorage ->
+            localStorage[HAIR_LINK] = hairLink
+        }
+    }
+
+    fun getHairLink(): Flow<String?> {
+        return appContext.dataStore.data.map { localStorage ->
+            localStorage[HAIR_LINK]
+        }
+    }
+
+    suspend fun setEyeLink(eyeLink: String) {
+        appContext.dataStore.edit { localStorage ->
+            localStorage[EYE_LINK] = eyeLink
+        }
+    }
+
+    fun getEyeLink(): Flow<String?> {
+        return appContext.dataStore.data.map { localStorage ->
+            localStorage[EYE_LINK]
+        }
+    }
+
+    suspend fun setBodyLink(bodyLink: String) {
+        appContext.dataStore.edit { localStorage ->
+            localStorage[BODY_LINK] = bodyLink
+        }
+    }
+
+    fun getBodyLink(): Flow<String?> {
+        return appContext.dataStore.data.map { localStorage ->
+            localStorage[BODY_LINK]
+        }
+    }
+
+
 
 
 }

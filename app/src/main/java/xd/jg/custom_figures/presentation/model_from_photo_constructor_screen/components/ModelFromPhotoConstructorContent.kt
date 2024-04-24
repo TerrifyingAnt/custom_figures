@@ -4,19 +4,26 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import xd.jg.custom_figures.presentation.model_from_photo_constructor_screen.ModelFromPhotoConstructorViewModel
 import xd.jg.custom_figures.ui.theme.CustomPrimary
 import xd.jg.custom_figures.ui.theme.unboundedRegularFont
+import xd.jg.custom_figures.utils.Constants.ROUNDED
 import xd.jg.custom_figures.utils.Resource
 import xd.jg.custom_figures.utils.Utils
 
@@ -24,7 +31,6 @@ import xd.jg.custom_figures.utils.Utils
 fun ModelFromPhotoConstructorContent(
     viewModel: ModelFromPhotoConstructorViewModel = hiltViewModel()
 ) {
-    var buttonText = "Сделать фото"
     val context = LocalContext.current.applicationContext
     LaunchedEffect(Unit) {
         viewModel.checkIfPhotoWasMade(context)
@@ -76,15 +82,39 @@ fun ModelFromPhotoConstructorContent(
             }
         }
     }
-    Column(verticalArrangement = Arrangement.Bottom, modifier = Modifier.fillMaxHeight()) {
+    Column(verticalArrangement = Arrangement.Bottom, horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.fillMaxHeight()) {
         if (viewModel.modelFromPhotoConstructorUIState.value.photoWasMade.value ||
-            viewModel.modelFromPhotoConstructorUIState.value.figure.status == Resource.Status.SUCCESS) {
+            viewModel.modelFromPhotoConstructorUIState.value.figure.status == Resource.Status.SUCCESS
+        ) {
             CurrentModelState(
                 currentModelState = Utils.createTestData()
             )
-            buttonText = "Переснять"
+            viewModel.changePhotoButtonState("Переснять")
         }
-        CenteredInRowButton(0.1f, 0.5f, buttonText)
+        when {
+            viewModel.modelFromPhotoConstructorUIState.value.buttonText.value == "Переснять" -> {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    Spacer(modifier = Modifier.size(5.dp))
+                    Button(onClick = {viewModel.addToBasket()}, shape = RoundedCornerShape(ROUNDED.dp)) {
+                        Text("В корзину!")
+                    }
+                    CenteredInRowButton(0.1f, 0.5f, "Переснять")
+                    Spacer(modifier = Modifier.size(5.dp))
+                }
+            }
+            else -> {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceAround
+                ) {
+                    CenteredInRowButton(0.1f, 0.5f, "Сделать фото")
+                }
+            }
+        }
+
     }
 }
 

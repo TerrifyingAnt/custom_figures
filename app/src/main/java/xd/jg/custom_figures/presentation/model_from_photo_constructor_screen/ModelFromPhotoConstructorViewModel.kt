@@ -15,11 +15,15 @@ import androidx.work.WorkManager
 import androidx.work.workDataOf
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import xd.jg.custom_figures.data.dto.ModelPartListDto
 import xd.jg.custom_figures.data.local.DataStoreManager
+import xd.jg.custom_figures.data.local.entity.BasketItemEntity
+import xd.jg.custom_figures.data.local.entity.FigureType
+import xd.jg.custom_figures.domain.local.IBasketRepository
 import xd.jg.custom_figures.domain.remote.IPhotoConstructorRepository
 import xd.jg.custom_figures.utils.Resource
 import xd.jg.custom_figures.work_manager.GlbDownloadWorker
@@ -32,7 +36,8 @@ import javax.inject.Inject
 @HiltViewModel
 class ModelFromPhotoConstructorViewModel @Inject constructor(
     private val iPhotoConstructorRepository: IPhotoConstructorRepository,
-    private val dataStoreManager: DataStoreManager
+    private val dataStoreManager: DataStoreManager,
+    private val db: IBasketRepository
 ): ViewModel() {
 
     private val _modelFromPhotoConstructorUIState = mutableStateOf(ModelFromPhotoConstructorUIState())
@@ -82,6 +87,9 @@ class ModelFromPhotoConstructorViewModel @Inject constructor(
                     )
                 )
             }
+            dataStoreManager.setEyeLink(response.data.eye)
+            dataStoreManager.setHairLink(response.data.hair)
+            dataStoreManager.setBodyLink(response.data.body)
             downloadGlbFile(applicationContext, response.data.eye, "eye", _modelFromPhotoConstructorUIState.value.eyes)
             downloadGlbFile(applicationContext, response.data.hair, "hair", _modelFromPhotoConstructorUIState.value.hair)
             downloadGlbFile(applicationContext, response.data.body, "body", _modelFromPhotoConstructorUIState.value.body)
@@ -214,6 +222,15 @@ class ModelFromPhotoConstructorViewModel @Inject constructor(
                 deleteModel = mutableStateOf(true)
             )
         }
+        changePhotoButtonState("Сделать фото")
+    }
+
+    fun changePhotoButtonState(state: String) {
+        updateUIState {
+            copy (
+                buttonText = mutableStateOf(state)
+            )
+        }
     }
 
     fun clearScene(context: Context) {
@@ -223,7 +240,8 @@ class ModelFromPhotoConstructorViewModel @Inject constructor(
                 body = Resource.loading(),
                 hair = Resource.loading(),
                 eyes = Resource.loading(),
-                photoWasMade = mutableStateOf(false)
+                photoWasMade = mutableStateOf(false),
+                buttonText = mutableStateOf("Сделать фото")
             )
         }
         val currentPath = getPaths(context)
@@ -341,6 +359,19 @@ class ModelFromPhotoConstructorViewModel @Inject constructor(
                 isModelRotating = mutableStateOf(state)
             )
         }
+    }
+
+    fun addToBasket() = viewModelScope.launch{
+        db.insertFigureToBasket(
+            BasketItemEntity(
+                id = 0,
+                type = FigureType.CUSTOM_BY_PHOTO.ordinal,
+                hairLink = dataStoreManager.getHairLink().first().orEmpty(),
+                eyeLink = dataStoreManager.getEyeLink().first().orEmpty(),
+                bodyLink = dataStoreManager.getBodyLink().first().orEmpty(),
+                count = 1
+            )
+        )
     }
 
 }

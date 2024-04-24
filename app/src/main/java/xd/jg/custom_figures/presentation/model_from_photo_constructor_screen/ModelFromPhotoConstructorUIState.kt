@@ -19,5 +19,6 @@ data class ModelFromPhotoConstructorUIState(
     val skyBoxColor: MutableState<Color> = mutableStateOf(Color.White),
     val isDialogShown: MutableState<Boolean> = mutableStateOf(false),
     val isModelRotating: MutableState<Boolean> = mutableStateOf(true),
-    val deleteModel: MutableState<Boolean> = mutableStateOf(false)
+    val deleteModel: MutableState<Boolean> = mutableStateOf(false),
+    var buttonText: MutableState<String> = mutableStateOf("Сделать фото")
 )

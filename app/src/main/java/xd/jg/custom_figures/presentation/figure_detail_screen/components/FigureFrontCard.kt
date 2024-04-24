@@ -38,6 +38,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import coil.annotation.ExperimentalCoilApi
 import coil.compose.rememberImagePainter
 import com.tbuonomo.viewpagerdotsindicator.compose.DotsIndicator
@@ -47,7 +48,9 @@ import xd.jg.custom_figures.R
 import xd.jg.custom_figures.data.dto.FigureDto
 import xd.jg.custom_figures.data.dto.TagDto
 import xd.jg.custom_figures.presentation.catalog_screen.components.CustomTag
+import xd.jg.custom_figures.presentation.components.Counter
 import xd.jg.custom_figures.presentation.components.CustomButton
+import xd.jg.custom_figures.presentation.figure_detail_screen.FigureDetailViewModel
 import xd.jg.custom_figures.ui.theme.CustomPrimary
 import xd.jg.custom_figures.ui.theme.CustomPrimaryContainer
 import xd.jg.custom_figures.ui.theme.CustomPrimaryFixedDim
@@ -57,7 +60,7 @@ import xd.jg.custom_figures.utils.toTagFilter
 
 @OptIn(ExperimentalFoundationApi::class, ExperimentalCoilApi::class)
 @Composable
-fun FigureFrontCard(figure: FigureDto) {
+fun FigureFrontCard(figure: FigureDto, viewModel: FigureDetailViewModel = hiltViewModel()) {
     Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.fillMaxSize()) {
         Card(
             colors = CardDefaults.cardColors(
@@ -172,17 +175,36 @@ fun FigureFrontCard(figure: FigureDto) {
                     }
                 }
                 item {
-                    Column(verticalArrangement = Arrangement.Bottom, modifier = Modifier
-                        .fillMaxHeight()
-                        .padding(5.dp)) {
-                        Row(verticalAlignment = Alignment.Bottom, horizontalArrangement = Arrangement.Center, modifier = Modifier.fillMaxWidth()) {
-                            CustomButton(
-                                buttonColor = CustomPrimaryFixedDim,
-                                buttonText = "Купить",
-                                onClick = { /*TODO*/ },
-                                modifiers = Modifier.fillMaxWidth(0.6f)
-                            )
+                    when {
+                        viewModel.figureDetailUIState.value.count.value == 0 -> {
+                            Column(
+                                verticalArrangement = Arrangement.Bottom, modifier = Modifier
+                                    .fillMaxHeight()
+                                    .padding(5.dp)
+                            ) {
+                                Row(
+                                    verticalAlignment = Alignment.Bottom,
+                                    horizontalArrangement = Arrangement.Center,
+                                    modifier = Modifier.fillMaxWidth()
+                                ) {
+                                    CustomButton(
+                                        buttonColor = CustomPrimaryFixedDim,
+                                        buttonText = "Купить",
+                                        onClick = { viewModel.insertFigureToBasket(figure) },
+                                        modifiers = Modifier.fillMaxWidth(0.6f)
+                                    )
+                                }
+                            }
                         }
+                        else -> {
+                            Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
+                                Counter(viewModel.figureDetailUIState.value.count.value,
+                                    { viewModel.addFigureCount(figure.id) },
+                                    { viewModel.subtractFigureCount(figure.id) },
+                                    24)
+                            }
+                        }
+
                     }
                 }
             }

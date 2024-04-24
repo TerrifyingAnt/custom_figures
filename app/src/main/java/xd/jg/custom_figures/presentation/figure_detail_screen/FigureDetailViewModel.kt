@@ -3,6 +3,7 @@ package xd.jg.custom_figures.presentation.figure_detail_screen
 import android.content.Context
 import android.util.Log
 import androidx.compose.runtime.State
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asFlow
@@ -16,14 +17,18 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import xd.jg.custom_figures.data.dto.FigureDto
+import xd.jg.custom_figures.domain.local.IBasketRepository
 import xd.jg.custom_figures.domain.remote.IFigureRepository
 import xd.jg.custom_figures.utils.Resource
+import xd.jg.custom_figures.utils.toBasketItemEntity
 import xd.jg.custom_figures.work_manager.GlbDownloadWorker
 import javax.inject.Inject
 
 @HiltViewModel
 class FigureDetailViewModel @Inject constructor (
-    private val iFigureRepository: IFigureRepository
+    private val iFigureRepository: IFigureRepository,
+    private val db: IBasketRepository,
 ): ViewModel() {
 
 
@@ -45,6 +50,13 @@ class FigureDetailViewModel @Inject constructor (
             }
             Log.d("CRINGE_LINK", response.data.modelLink)
             downloadModel(context, response.data.modelLink)
+            val currentCountOfFigure = db.getFigureCount(response.data.id) ?: 0
+            updateUIState {
+                copy(
+                    count = mutableIntStateOf(currentCountOfFigure)
+                )
+            }
+
         }
         else {
             updateUIState {
@@ -99,10 +111,10 @@ class FigureDetailViewModel @Inject constructor (
                         Resource.success(filePath)
                     }
                     else if (errorMessage != null) {
-                        Log.d("ЛОХ ЕБАТЬ", "$errorMessage")
+                        Log.d("Error", "$errorMessage")
                         Resource.error(errorMessage)
                     } else {
-                        Log.d("ЛОХ ЕБАТЬ", "xd")
+                        Log.d("Error", "xd")
                         Resource.error("Unknown error")
                     }
                 } else if (workInfo != null && workInfo.state == WorkInfo.State.RUNNING) {
@@ -114,7 +126,7 @@ class FigureDetailViewModel @Inject constructor (
                     }
                     Resource.loading(progress.toString())
                 } else {
-                    Log.d("ЛОХ ЕБАТЬ", "xdxd $fileUrl " + workInfo.toString())
+                    Log.d("Error", "xdxd $fileUrl " + workInfo.toString())
                     Resource.error("xd")
                 }
             }
@@ -126,6 +138,41 @@ class FigureDetailViewModel @Inject constructor (
             workInfoFlow.collect {state ->
                 _figureDetailUIState.value.figureModel = state
             }
+        }
+    }
+
+    /** добавляет фигурку в корзину */
+    fun insertFigureToBasket(figure: FigureDto) = viewModelScope.launch {
+        updateUIState {
+            copy (
+                count = mutableIntStateOf(count.value + 1)
+            )
+        }
+        db.insertFigureToBasket(figure.toBasketItemEntity())
+    }
+
+    fun addFigureCount(figureId: Int) = viewModelScope.launch {
+        val tempCount = figureDetailUIState.value.count.value + 1
+        updateUIState {
+            copy (
+                count = mutableIntStateOf(tempCount)
+            )
+        }
+        db.updateFigureCount(figureId, tempCount)
+    }
+
+    fun subtractFigureCount(figureId: Int) = viewModelScope.launch {
+        val tempCount = figureDetailUIState.value.count.value - 1
+        updateUIState {
+            copy (
+                count = mutableIntStateOf(tempCount)
+            )
+        }
+        if (tempCount == 0) {
+            db.deleteFigureById(figureId)
+        }
+        else {
+            db.updateFigureCount(figureId, tempCount)
         }
     }
 }

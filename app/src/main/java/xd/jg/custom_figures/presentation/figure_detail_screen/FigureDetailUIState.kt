@@ -1,6 +1,7 @@
 package xd.jg.custom_figures.presentation.figure_detail_screen
 
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import xd.jg.custom_figures.data.dto.FigureDto
 import xd.jg.custom_figures.utils.Resource
@@ -13,5 +14,6 @@ import xd.jg.custom_figures.utils.Resource
 data class FigureDetailUIState (
     val figureDetails: Resource<FigureDto> = Resource.loading(),
     var figureModel: Resource<String> = Resource.loading(),
-    val clearScene: MutableState<Boolean> = mutableStateOf(false)
+    val clearScene: MutableState<Boolean> = mutableStateOf(false),
+    val count: MutableState<Int> = mutableIntStateOf(0)
 )
