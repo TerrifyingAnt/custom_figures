@@ -1,6 +1,7 @@
 package xd.jg.custom_figures.presentation.model_from_photo_constructor_screen
 
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.graphics.Color
 import xd.jg.custom_figures.data.dto.ModelPartListDto
@@ -20,5 +21,6 @@ data class ModelFromPhotoConstructorUIState(
     val isDialogShown: MutableState<Boolean> = mutableStateOf(false),
     val isModelRotating: MutableState<Boolean> = mutableStateOf(true),
     val deleteModel: MutableState<Boolean> = mutableStateOf(false),
-    var buttonText: MutableState<String> = mutableStateOf("Сделать фото")
+    val count: MutableState<Int> = mutableIntStateOf(0),
+    val currentFigureId: MutableState<Int> = mutableIntStateOf(0)
 )

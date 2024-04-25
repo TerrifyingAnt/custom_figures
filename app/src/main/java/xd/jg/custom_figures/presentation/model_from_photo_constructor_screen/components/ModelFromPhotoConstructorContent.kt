@@ -20,6 +20,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import xd.jg.custom_figures.presentation.components.Counter
 import xd.jg.custom_figures.presentation.model_from_photo_constructor_screen.ModelFromPhotoConstructorViewModel
 import xd.jg.custom_figures.ui.theme.CustomPrimary
 import xd.jg.custom_figures.ui.theme.unboundedRegularFont
@@ -34,6 +35,12 @@ fun ModelFromPhotoConstructorContent(
     val context = LocalContext.current.applicationContext
     LaunchedEffect(Unit) {
         viewModel.checkIfPhotoWasMade(context)
+    }
+
+    when {
+        viewModel.modelFromPhotoConstructorUIState.value.clearScene.value -> {
+            viewModel.updateCanGoState()
+        }
     }
 
     Box() {
@@ -54,11 +61,6 @@ fun ModelFromPhotoConstructorContent(
                                 fontSize = 24.sp,
                                 color = CustomPrimary
                             )
-                            when {
-                                viewModel.modelFromPhotoConstructorUIState.value.clearScene.value -> {
-                                    viewModel.updateCanGoState()
-                                }
-                            }
                         }
                     }
                 }
@@ -89,19 +91,30 @@ fun ModelFromPhotoConstructorContent(
             CurrentModelState(
                 currentModelState = Utils.createTestData()
             )
-            viewModel.changePhotoButtonState("Переснять")
         }
         when {
-            viewModel.modelFromPhotoConstructorUIState.value.buttonText.value == "Переснять" -> {
+            viewModel.modelFromPhotoConstructorUIState.value.photoWasMade.value -> {
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
                     Spacer(modifier = Modifier.size(5.dp))
-                    Button(onClick = {viewModel.addToBasket()}, shape = RoundedCornerShape(ROUNDED.dp)) {
-                        Text("В корзину!")
+                    when {
+                        viewModel.modelFromPhotoConstructorUIState.value.count.value == 0 -> {
+                            Button(onClick = {viewModel.addToBasket()}, shape = RoundedCornerShape(ROUNDED.dp)) {
+                                Text("В корзину!")
+                            }
+                        }
+                        else -> {
+                            Counter(viewModel.modelFromPhotoConstructorUIState.value.count.value,
+                                { viewModel.addButton() },
+                                { viewModel.subtractButton() },
+                                textSize = 18,
+                                inverse = true)
+                        }
                     }
-                    CenteredInRowButton(0.1f, 0.5f, "Переснять")
+
+                    CenteredInRowButton(0.1f, 0.5f, "Сделать фото")
                     Spacer(modifier = Modifier.size(5.dp))
                 }
             }

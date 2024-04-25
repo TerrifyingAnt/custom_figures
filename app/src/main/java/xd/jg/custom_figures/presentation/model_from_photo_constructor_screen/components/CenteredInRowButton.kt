@@ -11,6 +11,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import xd.jg.custom_figures.presentation.model_from_photo_constructor_screen.ModelFromPhotoConstructorViewModel
@@ -24,6 +25,7 @@ fun CenteredInRowButton(rowHeight: Float, buttonSize: Float, buttonText: String,
     val launcher = rememberLauncherForActivityResult(ActivityResultContracts.TakePicturePreview()) { bitmap ->
         if (bitmap != null) {
             modelFromPhotoConstructorViewModel.savePhoto(context, applicationContext, bitmap)
+            modelFromPhotoConstructorViewModel.checkIfUpdateNeeded()
         } else {
             Toast.makeText(context, "Что-то пошло не так", Toast.LENGTH_SHORT).show()
         }
@@ -39,7 +41,7 @@ fun CenteredInRowButton(rowHeight: Float, buttonSize: Float, buttonText: String,
             },
             modifier = Modifier.fillMaxWidth(buttonSize)
         ) {
-            Text(buttonText)
+            Text(buttonText, textAlign = TextAlign.Center)
         }
 
 }

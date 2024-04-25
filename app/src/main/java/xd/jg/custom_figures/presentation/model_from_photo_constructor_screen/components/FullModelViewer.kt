@@ -150,10 +150,10 @@ fun FullModelViewer(
 
                     when {
                         viewModel.modelFromPhotoConstructorUIState.value.deleteModel.value -> {
+                            viewModel.clearScene(context)
                             clearChildNodes()
                             clearAnimation()
                             destroy()
-                            viewModel.clearScene(context)
                         }
                     }
 

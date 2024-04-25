@@ -2,8 +2,8 @@ package xd.jg.custom_figures.presentation.model_from_photo_constructor_screen
 
 import android.content.Context
 import android.graphics.Bitmap
-import android.util.Log
 import androidx.compose.runtime.State
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.ViewModel
@@ -67,7 +67,7 @@ class ModelFromPhotoConstructorViewModel @Inject constructor(
         updateUIState {
             copy(
                 deleteModel = mutableStateOf(false),
-                figure = Resource.loading(null),
+                figure = Resource.success(null),
                 photoWasMade = mutableStateOf(true),
                 photoUri = mutableStateOf(imageFile.absolutePath)
             )
@@ -87,14 +87,11 @@ class ModelFromPhotoConstructorViewModel @Inject constructor(
                     )
                 )
             }
-            dataStoreManager.setEyeLink(response.data.eye)
-            dataStoreManager.setHairLink(response.data.hair)
-            dataStoreManager.setBodyLink(response.data.body)
+
             downloadGlbFile(applicationContext, response.data.eye, "eye", _modelFromPhotoConstructorUIState.value.eyes)
             downloadGlbFile(applicationContext, response.data.hair, "hair", _modelFromPhotoConstructorUIState.value.hair)
             downloadGlbFile(applicationContext, response.data.body, "body", _modelFromPhotoConstructorUIState.value.body)
         }
-
     }
 
     fun checkIfPhotoWasMade(context: Context) = viewModelScope.launch {
@@ -103,8 +100,8 @@ class ModelFromPhotoConstructorViewModel @Inject constructor(
         val body = File("$currentPath/body")
         val hair = File("$currentPath/hair")
         val eyes = File("$currentPath/eye")
-        Log.d("FUCKING CRINGE", body.exists().toString() + " $currentPath/eye")
         if (body.exists() && hair.exists() && eyes.exists()) {
+            getCount()
             photoWasMade = true
             updateUIState {
                 copy (
@@ -121,6 +118,7 @@ class ModelFromPhotoConstructorViewModel @Inject constructor(
                     figure = Resource.success(photoWasMade)
                 )
             }
+
         }
         else {
             updateUIState {
@@ -128,6 +126,7 @@ class ModelFromPhotoConstructorViewModel @Inject constructor(
                     photoWasMade = mutableStateOf(photoWasMade),
                     figure = Resource.loading(photoWasMade)
                 )
+
             }
         }
     }
@@ -219,31 +218,14 @@ class ModelFromPhotoConstructorViewModel @Inject constructor(
     fun deleteModel() {
         updateUIState {
             copy(
-                deleteModel = mutableStateOf(true)
-            )
-        }
-        changePhotoButtonState("Сделать фото")
-    }
-
-    fun changePhotoButtonState(state: String) {
-        updateUIState {
-            copy (
-                buttonText = mutableStateOf(state)
+                deleteModel = mutableStateOf(true),
+                count = mutableIntStateOf(0),
+                currentFigureId = mutableIntStateOf(0)
             )
         }
     }
 
     fun clearScene(context: Context) {
-        updateUIState {
-            copy(
-                figure = Resource.loading(),
-                body = Resource.loading(),
-                hair = Resource.loading(),
-                eyes = Resource.loading(),
-                photoWasMade = mutableStateOf(false),
-                buttonText = mutableStateOf("Сделать фото")
-            )
-        }
         val currentPath = getPaths(context)
         val body = File("$currentPath/body")
         val hair = File("$currentPath/hair")
@@ -256,6 +238,16 @@ class ModelFromPhotoConstructorViewModel @Inject constructor(
         }
         if (eyes.exists()) {
             eyes.delete()
+        }
+        updateUIState {
+            copy(
+                figure = Resource.loading(null),
+                body = Resource.loading(),
+                hair = Resource.loading(),
+                eyes = Resource.loading(),
+                photoWasMade = mutableStateOf(false),
+                photoUri = mutableStateOf(""),
+            )
         }
     }
 
@@ -362,16 +354,96 @@ class ModelFromPhotoConstructorViewModel @Inject constructor(
     }
 
     fun addToBasket() = viewModelScope.launch{
+        val hairLink = dataStoreManager.getHairLink().first().orEmpty()
+        val eyeLink = dataStoreManager.getEyeLink().first().orEmpty()
+        val bodyLink = dataStoreManager.getBodyLink().first().orEmpty()
+        val basketFigures = db.getFiguresByType(FigureType.CUSTOM_BY_PHOTO)
+        basketFigures?.forEach {
+            if (hairLink == it.hairLink && eyeLink == it.eyeLink && bodyLink == it.bodyLink) {
+                return@launch
+            }
+        }
         db.insertFigureToBasket(
             BasketItemEntity(
                 id = 0,
                 type = FigureType.CUSTOM_BY_PHOTO.ordinal,
-                hairLink = dataStoreManager.getHairLink().first().orEmpty(),
-                eyeLink = dataStoreManager.getEyeLink().first().orEmpty(),
-                bodyLink = dataStoreManager.getBodyLink().first().orEmpty(),
+                hairLink = hairLink,
+                eyeLink = eyeLink,
+                bodyLink = bodyLink,
                 count = 1
             )
         )
+        val figure = db.getFigureByLinks(eyeLink, hairLink, bodyLink) ?: return@launch
+        if (figure.id != 0 ) {
+            updateUIState {
+                copy(
+                    currentFigureId = mutableIntStateOf(figure.id),
+                    count = mutableIntStateOf(1)
+                )
+            }
+        }
+    }
+
+
+    fun addButton() = viewModelScope.launch {
+        val hairLink = dataStoreManager.getHairLink().first().orEmpty()
+        val eyeLink = dataStoreManager.getEyeLink().first().orEmpty()
+        val bodyLink = dataStoreManager.getBodyLink().first().orEmpty()
+        val figure = db.getFigureByLinks(eyeLink, hairLink, bodyLink) ?: return@launch
+        if (figure.id == 0) return@launch
+        val tempCount = modelFromPhotoConstructorUIState.value.count.value + 1
+        updateUIState {
+            copy (
+                count = mutableIntStateOf(tempCount)
+            )
+        }
+        db.updateFigureCountByBasketItemId(figure.id, tempCount)
+    }
+    fun subtractButton() = viewModelScope.launch {
+        val hairLink = dataStoreManager.getHairLink().first().orEmpty()
+        val eyeLink = dataStoreManager.getEyeLink().first().orEmpty()
+        val bodyLink = dataStoreManager.getBodyLink().first().orEmpty()
+        val figure = db.getFigureByLinks(eyeLink, hairLink, bodyLink) ?: return@launch
+        if (figure.id == 0) return@launch
+        val tempCount = modelFromPhotoConstructorUIState.value.count.value - 1
+        updateUIState {
+            copy (
+                count = mutableIntStateOf(tempCount)
+            )
+        }
+        if (tempCount == 0) {
+            db.deleteByBasketId(figure.id)
+        }
+        else {
+            db.updateFigureCountByBasketItemId(figure.id, tempCount)
+        }
+    }
+
+    private fun getCount() = viewModelScope.launch {
+        val hairLink = dataStoreManager.getHairLink().first().orEmpty()
+        val eyeLink = dataStoreManager.getEyeLink().first().orEmpty()
+        val bodyLink = dataStoreManager.getBodyLink().first().orEmpty()
+        val figure = db.getFigureByLinks(eyeLink, hairLink, bodyLink) ?: return@launch
+        if (figure.id == 0) return@launch
+        updateUIState {
+            copy (
+                count = mutableIntStateOf(figure.count)
+            )
+        }
+    }
+
+    fun checkIfUpdateNeeded() = viewModelScope.launch {
+        val newData = modelFromPhotoConstructorUIState.value.modelPartsList
+        if (newData.value?.eye != dataStoreManager.getEyeLink().first()) {
+            dataStoreManager.setEyeLink(newData.value?.eye ?: "")
+        }
+        if (newData.value?.hair != dataStoreManager.getHairLink().first()) {
+            dataStoreManager.setHairLink(newData.value?.hair ?: "")
+        }
+        if (newData.value?.body != dataStoreManager.getBodyLink().first()) {
+            dataStoreManager.setBodyLink(newData.value?.body ?: "")
+        }
+
     }
 
 }

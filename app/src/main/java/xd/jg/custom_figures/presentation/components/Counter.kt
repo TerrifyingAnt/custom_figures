@@ -16,10 +16,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
 import xd.jg.custom_figures.ui.theme.CustomCoolGreen
 import xd.jg.custom_figures.ui.theme.CustomError
+import xd.jg.custom_figures.ui.theme.CustomPrimary
 import xd.jg.custom_figures.ui.theme.unboundedRegularFont
 
 @Composable
-fun Counter(initialValue: Int = 0, addButton: (Int) -> Unit = {}, subtractButton: (Int) -> Unit = {}, textSize: Int = 16) {
+fun Counter(initialValue: Int = 0, addButton: (Int) -> Unit = {}, subtractButton: (Int) -> Unit = {}, textSize: Int = 16, inverse: Boolean = false) {
     var counter by remember { mutableIntStateOf(initialValue) }
     Row(modifier = Modifier.wrapContentSize(), verticalAlignment = Alignment.CenterVertically) {
         TextButton(onClick = {
@@ -28,7 +29,7 @@ fun Counter(initialValue: Int = 0, addButton: (Int) -> Unit = {}, subtractButton
         }) {
             Text("-", color = CustomError, fontFamily = unboundedRegularFont, fontSize = textSize.sp)
         }
-        Text("$counter", color = Color.White, fontFamily = unboundedRegularFont, fontSize = textSize.sp)
+        Text("$counter", color = if (!inverse) Color.White else CustomPrimary, fontFamily = unboundedRegularFont, fontSize = textSize.sp)
         TextButton(onClick = {
             counter += 1
             addButton(counter)

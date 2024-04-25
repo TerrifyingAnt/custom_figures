@@ -19,4 +19,19 @@ interface BasketDao {
 
     @Query("SELECT count FROM BasketItemEntity WHERE figureId=:figureId")
     suspend fun getFigureCount(figureId: Int): Int?
+
+    @Query("SELECT * FROM BasketItemEntity")
+    suspend fun getFigures(): List<BasketItemEntity>?
+
+    @Query("SELECT * FROM BasketItemEntity WHERE type=:type")
+    suspend fun getFigureByType(type: Int): List<BasketItemEntity>?
+
+    @Query("SELECT * FROM BasketItemEntity WHERE eyeLink=:eyeLink AND hairLink=:hairLink AND bodyLink=:bodyLink")
+    suspend fun getFigureByLinks(eyeLink: String, hairLink: String, bodyLink: String): BasketItemEntity?
+
+    @Query("UPDATE BasketItemEntity SET count=:count WHERE id=:id")
+    suspend fun updateFigureCountByBasketItemId(id: Int, count: Int)
+
+    @Query("DELETE FROM BasketItemEntity WHERE id=:id")
+    suspend fun deleteByBasketId(id: Int)
 }
