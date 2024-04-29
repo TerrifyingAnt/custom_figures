@@ -7,4 +7,6 @@ sealed class Routes(val route: String) {
     object FigureDetailScreen : Routes("catalog_screen/{figure_model}")
 
     object ModelFromPhotoConstructorScreen : Routes("model_from_photo_constructor")
+
+    object ModelFromTextConstructorScreen : Routes("model_from_text_constructor")
 }

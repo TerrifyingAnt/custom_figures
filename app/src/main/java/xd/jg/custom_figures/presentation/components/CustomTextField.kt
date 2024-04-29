@@ -1,5 +1,6 @@
 package xd.jg.custom_figures.presentation.components
 
+import android.util.Log
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -22,6 +23,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.times
 import xd.jg.custom_figures.ui.theme.CustomPrimary
 import xd.jg.custom_figures.ui.theme.CustomTertiary
 import xd.jg.custom_figures.ui.theme.CustomTertiaryContainer
@@ -41,7 +43,8 @@ fun CustomTextField(
     leadingIcon: ImageVector? = null,
     onTrailingIconClick: (() -> Unit)? = null,
     backgroundColor: Color? = null,
-    cursorColor: Color? = null
+    cursorColor: Color? = null,
+    singleLine: Boolean = true
 ) {
     Column(
         modifier = modifier
@@ -50,8 +53,8 @@ fun CustomTextField(
         OutlinedTextField(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(top = 3.dp)
-                .height(60.dp),
+                .padding(vertical = 5.dp)
+                .height(60.dp + ((textValue.split("\n").size - 1 ) * 25.dp)),
             label = { Text(text = description, color = cursorColor ?: CustomTertiary, fontFamily = robotoRegularFont) },
             value = textValue,
             colors = TextFieldDefaults.colors(
@@ -64,7 +67,8 @@ fun CustomTextField(
             ),
             onValueChange = onValueChanged,
             shape = RoundedCornerShape(ROUNDED.dp),
-            singleLine = true,
+            singleLine = singleLine,
+            maxLines = if (singleLine) 1 else textValue.split('\n').size + 1,
             leadingIcon = {if(leadingIcon != null){
                 Icon(
                     imageVector = leadingIcon,
@@ -96,6 +100,7 @@ fun CustomTextField(
             keyboardOptions = KeyboardOptions(keyboardType = keyboardType),
             visualTransformation = visualTransformation
         )
+        Log.d("XD", textValue.split("\n").toString())
     }
 }
 

@@ -66,7 +66,10 @@ fun TypeOfConstructorDialog(
                     CustomButton(
                         buttonColor = CustomPrimaryFixedDim,
                         buttonText = stringResource(id = R.string.text_constructor_string),
-                        onClick = { viewModel.updateIsDialogShown() },
+                        onClick = {
+                            viewModel.updateIsDialogShown()
+                            navController.navigate(Routes.ModelFromTextConstructorScreen.route)
+                                  },
                         modifiers = Modifier.fillMaxWidth(0.8f)
                     )
                 }

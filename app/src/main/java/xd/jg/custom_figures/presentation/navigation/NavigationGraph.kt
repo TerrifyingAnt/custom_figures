@@ -11,6 +11,7 @@ import xd.jg.custom_figures.presentation.basket_screen.BasketScreen
 import xd.jg.custom_figures.presentation.catalog_screen.CatalogScreen
 import xd.jg.custom_figures.presentation.figure_detail_screen.FigureDetailScreen
 import xd.jg.custom_figures.presentation.model_from_photo_constructor_screen.ModelFromPhotoConstructorScreen
+import xd.jg.custom_figures.presentation.model_from_text_constructor.ModelFromTextConstructorScreen
 import xd.jg.custom_figures.presentation.register_screen.RegisterScreen
 
 @Composable
@@ -62,6 +63,11 @@ fun NavigationGraph(navController: NavHostController, onBottomVisibilityChanged:
         composable(Routes.ModelFromPhotoConstructorScreen.route) {
             onBottomVisibilityChanged(false)
             ModelFromPhotoConstructorScreen(navController)
+        }
+
+        composable(Routes.ModelFromTextConstructorScreen.route) {
+            onBottomVisibilityChanged(false)
+            ModelFromTextConstructorScreen(navController)
         }
     }
 
