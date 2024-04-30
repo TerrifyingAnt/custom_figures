@@ -24,5 +24,7 @@ class FigureRepositoryImpl @Inject constructor(
         return safeApiCall { iFigureClient.getFigureById(figureId)}
     }
 
-
+    override suspend fun getFigurePreviewByIds(figureIds: List<Int>, page: Int): Resource<List<FigurePreviewDto>> {
+            return safeApiCall { iFigureClient.getFigurePreviewByIds(figureIds, page) }
+        }
 }

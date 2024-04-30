@@ -31,6 +31,22 @@ import xd.jg.custom_figures.ui.theme.unboundedLightFont
 fun ModelFromTextContent(viewModel: ModelFromTextConstructorViewModel = hiltViewModel()) {
     LazyColumn(modifier = Modifier.fillMaxWidth(0.9f)) {
         item {
+            CustomTextField(
+                modifier = Modifier,
+                description = "Название фигурки",
+                hint = "Название фигурки",
+                textValue = viewModel.modelFromPhotoConstructorUIState.value.figureTitle.value,
+                onValueChanged = viewModel::updateTitle
+            )
+        }
+        item {
+            Text(text ="Введите название фигурки, чтобы удобно видеть ее в корзине",
+                color = CustomAccent,
+                fontFamily = unboundedLightFont,
+                fontSize = 14.sp)
+        }
+
+        item {
                 CustomTextField(
                     modifier = Modifier,
                     description = "Описание фигурки",

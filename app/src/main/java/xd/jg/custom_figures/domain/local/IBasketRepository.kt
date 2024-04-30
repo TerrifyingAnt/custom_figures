@@ -22,4 +22,7 @@ interface IBasketRepository {
     suspend fun getFigureByLinks(eyeLink: String, hairLink: String, bodyLink: String): BasketItemEntity?
 
     suspend fun deleteByBasketId(basketId: Int)
+
+    suspend fun getFigureByTitle(figureTitle: String): BasketItemEntity?
+
 }

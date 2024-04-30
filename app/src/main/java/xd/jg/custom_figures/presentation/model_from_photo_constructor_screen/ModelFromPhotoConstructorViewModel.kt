@@ -370,7 +370,8 @@ class ModelFromPhotoConstructorViewModel @Inject constructor(
                 hairLink = hairLink,
                 eyeLink = eyeLink,
                 bodyLink = bodyLink,
-                count = 1
+                count = 1,
+                title = "Фигурка по фото ${System.currentTimeMillis()}"
             )
         )
         val figure = db.getFigureByLinks(eyeLink, hairLink, bodyLink) ?: return@launch

@@ -16,7 +16,7 @@ data class BasketItemEntity (
     val hairLink: String = "",
     val eyeLink: String = "",
     val bodyLink: String = "",
-    val count: Int = 0,
-    val price: Float = 0f
-
+    var count: Int = 0,
+    val price: Float = 0f,
+    val title: String = ""
 )

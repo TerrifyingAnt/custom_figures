@@ -1,4 +1,4 @@
-package xd.jg.custom_figures.presentation.catalog_screen.components
+package xd.jg.custom_figures.presentation.components
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
@@ -40,6 +40,7 @@ import com.tbuonomo.viewpagerdotsindicator.compose.DotsIndicator
 import com.tbuonomo.viewpagerdotsindicator.compose.model.DotGraphic
 import com.tbuonomo.viewpagerdotsindicator.compose.type.WormIndicatorType
 import xd.jg.custom_figures.data.dto.FigurePreviewDto
+import xd.jg.custom_figures.presentation.catalog_screen.components.CustomTag
 import xd.jg.custom_figures.presentation.navigation.Routes
 import xd.jg.custom_figures.ui.theme.CustomPrimary
 import xd.jg.custom_figures.ui.theme.CustomPrimaryContainer

@@ -48,4 +48,8 @@ class BasketRepository @Inject constructor(
     override suspend fun deleteByBasketId(basketId: Int) {
         return basketDao.deleteByBasketId(basketId)
     }
+
+    override suspend fun getFigureByTitle(figureTitle: String): BasketItemEntity? {
+        return basketDao.getFigureByTitle(figureTitle, FigureType.CUSTOM_BY_TEXT.ordinal)
+    }
 }

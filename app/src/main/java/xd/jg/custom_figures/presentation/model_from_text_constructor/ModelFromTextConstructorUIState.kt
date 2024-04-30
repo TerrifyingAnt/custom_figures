@@ -8,6 +8,7 @@ data class ModelFromTextConstructorUIState (
     val figureReferences: MutableState<String> = mutableStateOf(""),
     val switchColorFigure: MutableState<Boolean> = mutableStateOf(false),
     val switchMovingFigure: MutableState<Boolean> = mutableStateOf(false),
+    val figureTitle: MutableState<String> = mutableStateOf(""),
 
     val error: MutableState<Boolean> = mutableStateOf(false),
     val successfullyAdded: MutableState<Boolean> = mutableStateOf(false)

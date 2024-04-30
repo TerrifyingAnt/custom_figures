@@ -9,4 +9,6 @@ sealed class Routes(val route: String) {
     object ModelFromPhotoConstructorScreen : Routes("model_from_photo_constructor")
 
     object ModelFromTextConstructorScreen : Routes("model_from_text_constructor")
+
+    object CustomFigureDetailScreen : Routes("catalog_screen_custom/{figure_model_basket}")
 }

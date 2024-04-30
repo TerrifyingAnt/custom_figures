@@ -64,8 +64,22 @@ class ModelFromTextConstructorViewModel @Inject constructor(
         }
     }
 
+    fun updateTitle(newValue: String) {
+        updateUIState {
+            copy(
+                figureTitle = mutableStateOf(newValue)
+            )
+        }
+    }
+
     fun saveDescription() = viewModelScope.launch {
-        if (modelFromPhotoConstructorUIState.value.figureDescription.value != "" && modelFromPhotoConstructorUIState.value.figureReferences.value != "") {
+        if (modelFromPhotoConstructorUIState.value.figureDescription.value != "" &&
+            modelFromPhotoConstructorUIState.value.figureReferences.value != "" &&
+            modelFromPhotoConstructorUIState.value.figureTitle.value != "") {
+            val existFigure = db.getFigureByTitle(modelFromPhotoConstructorUIState.value.figureTitle.value)
+            if (existFigure != null) {
+                db.deleteByBasketId(existFigure.id)
+            }
             db.insertFigureToBasket(
                 BasketItemEntity(
                     id = 0,
@@ -73,7 +87,9 @@ class ModelFromTextConstructorViewModel @Inject constructor(
                     description = modelFromPhotoConstructorUIState.value.figureDescription.value,
                     references = modelFromPhotoConstructorUIState.value.figureReferences.value,
                     colored = modelFromPhotoConstructorUIState.value.switchColorFigure.value,
-                    movable = modelFromPhotoConstructorUIState.value.switchMovingFigure.value
+                    movable = modelFromPhotoConstructorUIState.value.switchMovingFigure.value,
+                    title = modelFromPhotoConstructorUIState.value.figureTitle.value,
+                    count = 1
                 )
             )
             updateUIState {

@@ -13,6 +13,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import xd.jg.custom_figures.presentation.catalog_screen.CatalogViewModel
+import xd.jg.custom_figures.presentation.components.FigurePreviewCard
 import xd.jg.custom_figures.utils.Resource
 
 @Composable

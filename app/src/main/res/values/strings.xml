@@ -22,4 +22,6 @@
     <string name="figure_string">Фигурка</string>
     <string name="figure_is_loading_string">Модель загружается, пожалуйста, подождите</string>
     <string name="constructor_string">Конструктор</string>
+    <string name="basket_string">Корзина</string>
+    <string name="buy_string">Заказать!</string>
 </resources>

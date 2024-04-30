@@ -19,4 +19,7 @@ interface IFigureClient {
     @GET("/figures/{id}")
     suspend fun getFigureById(@Path(value = "id", encoded = true) figureId: Int): Response<FigureDto>
 
+    @GET("/figures_preview")
+    suspend fun getFigurePreviewByIds(@Query("ids") ids: List<Int>, @Query("page") page: Int = 0): Response<List<FigurePreviewDto>>
+
 }

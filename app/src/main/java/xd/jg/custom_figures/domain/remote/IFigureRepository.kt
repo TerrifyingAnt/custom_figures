@@ -13,5 +13,9 @@ interface IFigureRepository {
     /** Для получение тэгов с сервера */
     suspend fun getTags(): Resource<List<TagTitleDto>>
 
+    /** получение фигурки по id*/
     suspend fun getFigureById(figureId: Int): Resource<FigureDto>
+
+    /** получение превью фигурок по id*/
+    suspend fun getFigurePreviewByIds(figureIds: List<Int>, page: Int = 0): Resource<List<FigurePreviewDto>>
 }

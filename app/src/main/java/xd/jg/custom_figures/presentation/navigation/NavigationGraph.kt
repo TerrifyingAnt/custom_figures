@@ -9,6 +9,7 @@ import androidx.navigation.navArgument
 import xd.jg.custom_figures.presentation.auth_screen.AuthScreen
 import xd.jg.custom_figures.presentation.basket_screen.BasketScreen
 import xd.jg.custom_figures.presentation.catalog_screen.CatalogScreen
+import xd.jg.custom_figures.presentation.custom_figure_detail_screen.CustomFigureDetailScreen
 import xd.jg.custom_figures.presentation.figure_detail_screen.FigureDetailScreen
 import xd.jg.custom_figures.presentation.model_from_photo_constructor_screen.ModelFromPhotoConstructorScreen
 import xd.jg.custom_figures.presentation.model_from_text_constructor.ModelFromTextConstructorScreen
@@ -23,6 +24,7 @@ fun NavigationGraph(navController: NavHostController, onBottomVisibilityChanged:
         }
 
         composable(BottomNavigationItems.ChatScreen.route) {
+            navController.popBackStack()
             onBottomVisibilityChanged(true)
         }
 
@@ -33,7 +35,7 @@ fun NavigationGraph(navController: NavHostController, onBottomVisibilityChanged:
 
         composable(BottomNavigationItems.BasketScreen.route) {
             onBottomVisibilityChanged(true)
-            BasketScreen()
+            BasketScreen(navController)
         }
 
         composable(Routes.Auth.route) {
@@ -68,6 +70,18 @@ fun NavigationGraph(navController: NavHostController, onBottomVisibilityChanged:
         composable(Routes.ModelFromTextConstructorScreen.route) {
             onBottomVisibilityChanged(false)
             ModelFromTextConstructorScreen(navController)
+        }
+
+        composable(
+            Routes.CustomFigureDetailScreen.route,
+            arguments = listOf(navArgument("figure_model_basket")
+            {
+                type = NavType.IntType
+            })
+        ) {backStackEntry ->
+            val basketModelId = backStackEntry.arguments?.getInt("figure_model_basket") ?: return@composable
+            onBottomVisibilityChanged(false)
+            CustomFigureDetailScreen(navController, basketModelId)
         }
     }
 
