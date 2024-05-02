@@ -38,4 +38,7 @@ interface BasketDao {
     @Query("SELECT * FROM BasketItemEntity WHERE title=:title AND type=:type")
     suspend fun getFigureByTitle(title: String, type: Int): BasketItemEntity?
 
+    @Query("SELECT * FROM BasketItemEntity WHERE id=:id")
+    suspend fun getFigureByBasketId(id: Int): BasketItemEntity?
+
 }

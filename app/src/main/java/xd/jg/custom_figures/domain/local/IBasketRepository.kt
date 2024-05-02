@@ -25,4 +25,6 @@ interface IBasketRepository {
 
     suspend fun getFigureByTitle(figureTitle: String): BasketItemEntity?
 
+    suspend fun getFigureByBasketId(basketId: Int): BasketItemEntity?
+
 }
