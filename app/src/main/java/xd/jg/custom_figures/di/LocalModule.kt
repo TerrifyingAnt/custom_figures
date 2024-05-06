@@ -9,6 +9,7 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import xd.jg.custom_figures.data.local.AppDatabase
 import xd.jg.custom_figures.data.local.DataStoreManager
+import xd.jg.custom_figures.data.local.TokenManager
 import xd.jg.custom_figures.data.local.dao.BasketDao
 import xd.jg.custom_figures.data.repository.local.BasketRepository
 import xd.jg.custom_figures.domain.local.IBasketRepository
@@ -21,6 +22,11 @@ object LocalModule {
     @Provides
     fun provideDataStoreManager(@ApplicationContext context: Context): DataStoreManager =
         DataStoreManager(context)
+
+    @Singleton
+    @Provides
+    fun provideTokenStoreManager(@ApplicationContext context: Context): TokenManager =
+        TokenManager(context)
 
     @Singleton
     @Provides

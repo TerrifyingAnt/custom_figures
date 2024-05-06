@@ -8,6 +8,6 @@ import xd.jg.custom_figures.utils.Resource
 
 data class BasketUIState (
     val basketFigures: MutableState<List<BasketItemEntity>?> = mutableStateOf(listOf()),
-    val previewDefaultFigures: Resource<List<FigurePreviewDto>> = Resource.loading(mutableListOf())
-    
+    val previewDefaultFigures: Resource<List<FigurePreviewDto>> = Resource.loading(mutableListOf()),
+    val authorized: MutableState<Boolean> = mutableStateOf(false)
 )

@@ -27,6 +27,7 @@ import xd.jg.custom_figures.presentation.basket_screen.components.BasketFigureCa
 import xd.jg.custom_figures.presentation.components.CustomButton
 import xd.jg.custom_figures.presentation.figure_detail_screen.components.FigureCardLoading
 import xd.jg.custom_figures.presentation.navigation.BottomNavigationItems
+import xd.jg.custom_figures.presentation.navigation.Routes
 import xd.jg.custom_figures.ui.theme.CustomPrimary
 import xd.jg.custom_figures.ui.theme.CustomPrimaryFixedDim
 import xd.jg.custom_figures.ui.theme.CustomSecondary
@@ -40,6 +41,7 @@ fun BasketScreen (
     viewModel: BasketViewModel = hiltViewModel()) {
     LaunchedEffect(Unit) {
         viewModel.getAllBasketItems()
+        viewModel.checkIfTokensExist()
     }
 
     BackHandler {
@@ -109,8 +111,12 @@ fun BasketScreen (
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
             CustomButton(
                 buttonColor = CustomPrimaryFixedDim,
-                buttonText = stringResource(R.string.buy_string),
-                onClick = { /** TODO */ },
+                buttonText = if (viewModel.basketUIState.value.authorized.value) stringResource(R.string.buy_string) else stringResource(R.string.enter_string),
+                onClick = { if (viewModel.basketUIState.value.authorized.value) {
+                    viewModel.createOrder()
+                } else {
+                    navController.navigate(Routes.Auth.route)
+                } },
                 bold = true,
                 modifiers = Modifier.fillMaxWidth(0.8f)
             )

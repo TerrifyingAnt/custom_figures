@@ -49,6 +49,10 @@ class BasketRepository @Inject constructor(
         return basketDao.deleteByBasketId(basketId)
     }
 
+    override suspend fun deleteAll() {
+        return basketDao.deleteAll()
+    }
+
     override suspend fun getFigureByTitle(figureTitle: String): BasketItemEntity? {
         return basketDao.getFigureByTitle(figureTitle, FigureType.CUSTOM_BY_TEXT.ordinal)
     }

@@ -23,6 +23,8 @@ interface IBasketRepository {
 
     suspend fun deleteByBasketId(basketId: Int)
 
+    suspend fun deleteAll()
+
     suspend fun getFigureByTitle(figureTitle: String): BasketItemEntity?
 
     suspend fun getFigureByBasketId(basketId: Int): BasketItemEntity?

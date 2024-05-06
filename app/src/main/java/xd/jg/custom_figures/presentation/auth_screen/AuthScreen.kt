@@ -23,6 +23,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import xd.jg.custom_figures.R
 import xd.jg.custom_figures.presentation.components.CustomButton
@@ -38,7 +39,7 @@ import xd.jg.custom_figures.utils.Constants.END_PADDING
 import xd.jg.custom_figures.utils.Constants.START_PADDING
 
 @Composable
-fun AuthScreen(navController: NavController) {
+fun AuthScreen(navController: NavController, viewModel: AuthViewModel = hiltViewModel()) {
     Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.fillMaxHeight(0.8f)) {
         Row(horizontalArrangement = Arrangement.Center, modifier = Modifier.fillMaxWidth()) {
             Text(text = stringResource(R.string.authentication_string),  fontFamily = unboundedBoldFont, fontSize = 30.sp, color = CustomSecondary)
@@ -59,8 +60,8 @@ fun AuthScreen(navController: NavController) {
                     .fillMaxWidth()
                     .padding(20.dp, 0.dp, 20.dp, 5.dp),
                 hint = "xd@xd.xd",
-                textValue = "",
-                onValueChanged = {},
+                textValue = viewModel.authUIState.value.login.value,
+                onValueChanged = viewModel::updateLogin,
                 trailingIcon = Icons.Default.AlternateEmail,
                 onTrailingIconClick = {}
             )
@@ -73,8 +74,8 @@ fun AuthScreen(navController: NavController) {
                     .fillMaxWidth()
                     .padding(START_PADDING.dp, 0.dp, END_PADDING.dp, 5.dp),
                 hint = "qwerty12345",
-                textValue = "",
-                onValueChanged = {},
+                textValue = viewModel.authUIState.value.password.value,
+                onValueChanged = viewModel::updatePassword,
                 trailingIcon = Icons.Default.Password,
                 onTrailingIconClick = {}
             )

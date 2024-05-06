@@ -6,19 +6,24 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import xd.jg.custom_figures.data.dto.FigurePreviewDto
+import xd.jg.custom_figures.data.local.TokenManager
 import xd.jg.custom_figures.data.local.entity.BasketItemEntity
 import xd.jg.custom_figures.data.local.entity.FigureType
 import xd.jg.custom_figures.domain.local.IBasketRepository
 import xd.jg.custom_figures.domain.remote.IFigureRepository
+import xd.jg.custom_figures.domain.remote.IOrderRepository
 import xd.jg.custom_figures.utils.Resource
 import javax.inject.Inject
 
 @HiltViewModel
 class BasketViewModel @Inject constructor(
     private val db: IBasketRepository,
-    private val iFigureRepository: IFigureRepository
+    private val iFigureRepository: IFigureRepository,
+    private val iOrderRepository: IOrderRepository,
+    private val tokenManager: TokenManager
 ): ViewModel() {
 
     private val _basketUIState = mutableStateOf(BasketUIState())
@@ -29,6 +34,7 @@ class BasketViewModel @Inject constructor(
         _basketUIState.value = _basketUIState.value.update()
     }
 
+    /** получение информации оо фигурках из корзины*/
     fun getAllBasketItems() = viewModelScope.launch {
         val figures = db.getFigures()
         val catalogFigures = figures?.filter {it.type == FigureType.CUSTOM_DEFAULT.ordinal}?.map {it.figureId} ?: listOf()
@@ -40,6 +46,7 @@ class BasketViewModel @Inject constructor(
         }
     }
 
+    /** получение превью с сервера*/
     private fun getFiguresFromServer(ids: List<Int>) = viewModelScope.launch {
         val listCatalogFigures = mutableListOf<FigurePreviewDto>()
         val response = iFigureRepository.getFigurePreviewByIds(ids)
@@ -53,6 +60,7 @@ class BasketViewModel @Inject constructor(
         }
     }
 
+    /** увеличение количества фигурок в корзине*/
     fun addFigureCount(figureId: Int) = viewModelScope.launch {
         val figure = basketUIState.value.basketFigures.value?.find {it.id == figureId}
         Log.d("TF", figure.toString())
@@ -72,6 +80,7 @@ class BasketViewModel @Inject constructor(
         }
     }
 
+    /** уменьшение количества фигурок в корзине*/
     fun subtractFigureCount(figureId: Int) = viewModelScope.launch {
         val tempFigure = basketUIState.value.basketFigures.value?.find {it.id == figureId}
         val tempCount = tempFigure?.count ?: 1
@@ -98,6 +107,31 @@ class BasketViewModel @Inject constructor(
             updateUIState {
                 copy (
                     basketFigures = mutableStateOf(newListFigures)
+                )
+            }
+        }
+    }
+
+    /** создать заказ */
+    fun createOrder() = viewModelScope.launch {
+        val listOfItems = _basketUIState.value.basketFigures.value ?: return@launch
+        iOrderRepository.createOrder(listOfItems)
+        db.deleteAll()
+        updateUIState {
+            copy(
+                basketFigures = mutableStateOf(mutableListOf()),
+                previewDefaultFigures = Resource.loading()
+            )
+        }
+    }
+
+    /** проверка наличия токенов */
+    fun checkIfTokensExist() = viewModelScope.launch {
+        val tokenExist = tokenManager.getAccessToken().first()
+        if (tokenExist != "" && tokenExist != null) {
+            updateUIState {
+                copy (
+                    authorized = mutableStateOf(true)
                 )
             }
         }

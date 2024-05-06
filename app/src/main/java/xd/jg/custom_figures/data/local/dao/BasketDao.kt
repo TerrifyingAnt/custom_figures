@@ -41,4 +41,7 @@ interface BasketDao {
     @Query("SELECT * FROM BasketItemEntity WHERE id=:id")
     suspend fun getFigureByBasketId(id: Int): BasketItemEntity?
 
+    @Query("DELETE FROM BasketItemEntity")
+    suspend fun deleteAll()
+
 }

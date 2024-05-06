@@ -17,7 +17,7 @@ import xd.jg.custom_figures.presentation.register_screen.RegisterScreen
 
 @Composable
 fun NavigationGraph(navController: NavHostController, onBottomVisibilityChanged: (Boolean) -> Unit) {
-    NavHost(navController, startDestination = Routes.Auth.route) {
+    NavHost(navController, startDestination = BottomNavigationItems.CatalogScreen.route) {
         composable(BottomNavigationItems.CatalogScreen.route) {
             onBottomVisibilityChanged(true)
             CatalogScreen(navController)

@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.AlternateEmail
@@ -53,61 +54,81 @@ fun RegisterScreen(navController: NavController) {
             )
         }
         Spacer(Modifier.size(20.dp))
-        Row(horizontalArrangement = Arrangement.Center, modifier = Modifier.fillMaxWidth()) {
-            CustomTextField(
-                description = stringResource(R.string.your_name_string),
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(START_PADDING.dp, 0.dp, END_PADDING.dp, 5.dp),
-                hint = "Артём",
-                textValue = "",
-                onValueChanged = {},
-                trailingIcon = Icons.Default.AccountCircle,
-                onTrailingIconClick = {}
-            )
+        LazyColumn {
+            item {
+                Row(
+                    horizontalArrangement = Arrangement.Center,
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    CustomTextField(
+                        description = stringResource(R.string.your_name_string),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(START_PADDING.dp, 0.dp, END_PADDING.dp, 5.dp),
+                        hint = "Артём",
+                        textValue = "",
+                        onValueChanged = {},
+                        trailingIcon = Icons.Default.AccountCircle,
+                        onTrailingIconClick = {}
+                    )
+                }
+            }
+            item {
+                Row(
+                    horizontalArrangement = Arrangement.Center,
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    CustomTextField(
+                        description = stringResource(R.string.login_string),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(START_PADDING.dp, 0.dp, END_PADDING.dp, 5.dp),
+                        hint = "xd@xd.xd",
+                        textValue = "",
+                        onValueChanged = {},
+                        trailingIcon = Icons.Default.AlternateEmail,
+                        onTrailingIconClick = {}
+                    )
+                }
+            }
+            item {
+                Row(
+                    horizontalArrangement = Arrangement.Center,
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    CustomTextField(
+                        description = stringResource(R.string.password_string),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(START_PADDING.dp, 0.dp, END_PADDING.dp, 5.dp),
+                        hint = "qwerty12345",
+                        textValue = "",
+                        onValueChanged = {},
+                        trailingIcon = Icons.Default.Password,
+                        onTrailingIconClick = {}
+                    )
+                }
+            }
+            item {
+                Row(
+                    horizontalArrangement = Arrangement.Center,
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    CustomTextField(
+                        description = stringResource(R.string.repeat_password_string),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(START_PADDING.dp, 0.dp, END_PADDING.dp, 5.dp),
+                        hint = "qwerty12345",
+                        textValue = "",
+                        onValueChanged = {},
+                        trailingIcon = Icons.Default.Password,
+                        onTrailingIconClick = {}
+                    )
+                }
+            }
         }
 
-        Row(horizontalArrangement = Arrangement.Center, modifier = Modifier.fillMaxWidth()) {
-            CustomTextField(
-                description = stringResource(R.string.login_string),
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(START_PADDING.dp, 0.dp, END_PADDING.dp, 5.dp),
-                hint = "xd@xd.xd",
-                textValue = "",
-                onValueChanged = {},
-                trailingIcon = Icons.Default.AlternateEmail,
-                onTrailingIconClick = {}
-            )
-        }
-
-        Row(horizontalArrangement = Arrangement.Center, modifier = Modifier.fillMaxWidth()) {
-            CustomTextField(
-                description = stringResource(R.string.password_string),
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(START_PADDING.dp, 0.dp, END_PADDING.dp, 5.dp),
-                hint = "qwerty12345",
-                textValue = "",
-                onValueChanged = {},
-                trailingIcon = Icons.Default.Password,
-                onTrailingIconClick = {}
-            )
-        }
-
-        Row(horizontalArrangement = Arrangement.Center, modifier = Modifier.fillMaxWidth()) {
-            CustomTextField(
-                description = stringResource(R.string.repeat_password_string),
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(START_PADDING.dp, 0.dp, END_PADDING.dp, 5.dp),
-                hint = "qwerty12345",
-                textValue = "",
-                onValueChanged = {},
-                trailingIcon = Icons.Default.Password,
-                onTrailingIconClick = {}
-            )
-        }
     }
 
     Column(verticalArrangement = Arrangement.Bottom, modifier = Modifier.fillMaxHeight()) {

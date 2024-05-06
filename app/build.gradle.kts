@@ -135,8 +135,8 @@ dependencies {
     // optional - Paging 3 Integration
     implementation("androidx.room:room-paging:$room_version")
 
-
-
+    // logging interceptor
+    implementation("com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.2")
 
 
     testImplementation("junit:junit:4.13.2")
