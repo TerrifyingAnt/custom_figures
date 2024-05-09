@@ -31,3 +31,5 @@ val CustomPrimaryFixedDim = Color(0xffBAC3FF)
 val CustomTertiaryFixedDim = Color(0xffD1BCFD)
 val CustomCoolGreen = Color(0xFF80DF64)
 
+val CustomOnPrimaryFixedVariant = Color(0xFF394379)
+

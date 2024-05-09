@@ -76,7 +76,7 @@ object RemoteModule {
 
     @Provides
     @Singleton
-    fun provideIFiguresClient(iOrderClient: IOrderClient): IOrderRepository = OrderRepositoryImpl(iOrderClient)
+    fun provideIOrderClient(iOrderClient: IOrderClient): IOrderRepository = OrderRepositoryImpl(iOrderClient)
 
 
     @Provides

@@ -24,4 +24,5 @@
     <string name="constructor_string">Конструктор</string>
     <string name="basket_string">Корзина</string>
     <string name="buy_string">Заказать!</string>
+    <string name="profile_string">Профиль</string>
 </resources>

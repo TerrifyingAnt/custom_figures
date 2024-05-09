@@ -1,31 +1,29 @@
-package xd.jg.custom_figures.presentation.auth_screen
+package xd.jg.custom_figures.presentation.register_screen
 
-import android.util.Log
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import xd.jg.custom_figures.data.dto.UserRegisterInfoDto
 import xd.jg.custom_figures.data.local.TokenManager
 import xd.jg.custom_figures.domain.remote.IAuthRepository
-import xd.jg.custom_figures.utils.Constants.EMAIL_ADDRESS_PATTERN
 import xd.jg.custom_figures.utils.Resource
 import javax.inject.Inject
 
 @HiltViewModel
-class AuthViewModel @Inject constructor(
+class RegisterViewModel @Inject constructor(
     private val tokenManager: TokenManager,
     private val iAuthRepository: IAuthRepository
-
 ): ViewModel() {
 
-    private val _authUIState = mutableStateOf(AuthUIState())
-    val authUIState: State<AuthUIState> = _authUIState
+    private val _registerUIState = mutableStateOf(RegisterUIState())
+    val registerUIState: State<RegisterUIState> = _registerUIState
 
     /** состояние всего*/
-    private fun updateUIState(update: AuthUIState.() -> AuthUIState) {
-        _authUIState.value = _authUIState.value.update()
+    private fun updateUIState(update: RegisterUIState.() -> RegisterUIState) {
+        _registerUIState.value = _registerUIState.value.update()
     }
 
     /** обновление логина*/
@@ -48,8 +46,30 @@ class AuthViewModel @Inject constructor(
         checkPasswordErrors()
     }
 
-    fun login() = viewModelScope.launch {
-        val response = iAuthRepository.login(authUIState.value.login.value, authUIState.value.password.value)
+    fun updateCopyPassword(newText: String) {
+        updateUIState {
+            copy(
+                repeatPassword = mutableStateOf(newText)
+            )
+        }
+        checkPasswordErrors()
+    }
+
+    fun updateFullName(newText: String) {
+        updateUIState {
+            copy (
+                fullName = mutableStateOf(newText)
+            )
+        }
+    }
+
+    fun register() = viewModelScope.launch {
+        val user = UserRegisterInfoDto(
+            registerUIState.value.login.value,
+            registerUIState.value.fullName.value,
+            registerUIState.value.password.value)
+        iAuthRepository.register(user)
+        val response = iAuthRepository.login(user.login, user.password)
         if (response.data != null) {
             tokenManager.setAccessToken(response.data.accessToken)
             tokenManager.setRefreshToken(response.data.refreshToken)
@@ -107,12 +127,12 @@ class AuthViewModel @Inject constructor(
     }
 
     private fun isValidEmail(email: String): Boolean {
-        val emailPattern = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\\$"
+        val emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+"
         return email.matches(Regex(emailPattern))
     }
 
     private fun checkPasswordErrors() {
-        val password = _authUIState.value.password.value
+        val password = _registerUIState.value.password.value
         updateUIState {
             copy(
                 isPasswordValid = mutableStateOf(isValidPassword(password))
@@ -121,25 +141,17 @@ class AuthViewModel @Inject constructor(
     }
 
     private fun checkLoginErrors() {
-        val login = _authUIState.value.login.value
-        if(!EMAIL_ADDRESS_PATTERN.matcher(login).matches()) {
+        val login = _registerUIState.value.login.value
+        if(!isValidEmail(login)) {
             updateUIState {
                 copy (
                     loginErrors = mutableStateOf("Логин должен быть корректной почтой")
                 )
             }
         }
-        else {
-            updateUIState {
-                copy (
-                    loginErrors = mutableStateOf("")
-                )
-            }
-        }
-        Log.d("XDDD", EMAIL_ADDRESS_PATTERN.matcher(login).matches().toString())
         updateUIState {
             copy(
-                isLoginValid = mutableStateOf(EMAIL_ADDRESS_PATTERN.matcher(login).matches())
+                isLoginValid = mutableStateOf(isValidEmail(login))
             )
         }
     }

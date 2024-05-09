@@ -138,6 +138,10 @@ dependencies {
     // logging interceptor
     implementation("com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.2")
 
+    // JsonProperties
+    implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.17.1")
+
+
 
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")

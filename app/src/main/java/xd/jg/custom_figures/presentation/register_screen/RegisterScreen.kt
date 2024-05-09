@@ -1,5 +1,6 @@
 package xd.jg.custom_figures.presentation.register_screen
 
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -19,11 +20,14 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import xd.jg.custom_figures.R
@@ -38,9 +42,25 @@ import xd.jg.custom_figures.ui.theme.robotoRegularFont
 import xd.jg.custom_figures.ui.theme.unboundedBoldFont
 import xd.jg.custom_figures.utils.Constants.END_PADDING
 import xd.jg.custom_figures.utils.Constants.START_PADDING
+import xd.jg.custom_figures.utils.Resource
 
 @Composable
-fun RegisterScreen(navController: NavController) {
+fun RegisterScreen(navController: NavController, viewModel: RegisterViewModel = hiltViewModel()) {
+
+
+    when (viewModel.registerUIState.value.successAuth.status) {
+        Resource.Status.SUCCESS -> {
+            navController.navigate(BottomNavigationItems.CatalogScreen.route) {
+                popUpTo(0)
+            }
+        }
+        Resource.Status.LOADING -> {
+
+        }
+        Resource.Status.ERROR -> {
+            Toast.makeText(LocalContext.current, viewModel.registerUIState.value.successAuth.message, Toast.LENGTH_SHORT).show()
+        }
+    }
     Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.fillMaxHeight(0.8f)) {
         Row(horizontalArrangement = Arrangement.Center, modifier = Modifier.fillMaxWidth()) {
             Text(text = stringResource(R.string.registration_string),  fontFamily = unboundedBoldFont, fontSize = 30.sp, color = CustomSecondary)
@@ -66,8 +86,8 @@ fun RegisterScreen(navController: NavController) {
                             .fillMaxWidth()
                             .padding(START_PADDING.dp, 0.dp, END_PADDING.dp, 5.dp),
                         hint = "Артём",
-                        textValue = "",
-                        onValueChanged = {},
+                        textValue = viewModel.registerUIState.value.fullName.value,
+                        onValueChanged = viewModel::updateFullName,
                         trailingIcon = Icons.Default.AccountCircle,
                         onTrailingIconClick = {}
                     )
@@ -84,8 +104,8 @@ fun RegisterScreen(navController: NavController) {
                             .fillMaxWidth()
                             .padding(START_PADDING.dp, 0.dp, END_PADDING.dp, 5.dp),
                         hint = "xd@xd.xd",
-                        textValue = "",
-                        onValueChanged = {},
+                        textValue = viewModel.registerUIState.value.login.value,
+                        onValueChanged = viewModel::updateLogin,
                         trailingIcon = Icons.Default.AlternateEmail,
                         onTrailingIconClick = {}
                     )
@@ -102,8 +122,8 @@ fun RegisterScreen(navController: NavController) {
                             .fillMaxWidth()
                             .padding(START_PADDING.dp, 0.dp, END_PADDING.dp, 5.dp),
                         hint = "qwerty12345",
-                        textValue = "",
-                        onValueChanged = {},
+                        textValue = viewModel.registerUIState.value.password.value,
+                        onValueChanged = viewModel::updatePassword,
                         trailingIcon = Icons.Default.Password,
                         onTrailingIconClick = {}
                     )
@@ -120,9 +140,10 @@ fun RegisterScreen(navController: NavController) {
                             .fillMaxWidth()
                             .padding(START_PADDING.dp, 0.dp, END_PADDING.dp, 5.dp),
                         hint = "qwerty12345",
-                        textValue = "",
-                        onValueChanged = {},
+                        textValue = viewModel.registerUIState.value.repeatPassword.value,
+                        onValueChanged = viewModel::updateCopyPassword,
                         trailingIcon = Icons.Default.Password,
+                        visualTransformation = PasswordVisualTransformation(),
                         onTrailingIconClick = {}
                     )
                 }
@@ -137,8 +158,12 @@ fun RegisterScreen(navController: NavController) {
                 buttonColor = CustomSecondaryContainer,
                 buttonText = stringResource(R.string.register_string),
                 {
-                    navController.navigate(BottomNavigationItems.CatalogScreen.route) {
-                        popUpTo(0)
+                    if (viewModel.registerUIState.value.isPasswordValid.value &&
+                        viewModel.registerUIState.value.isLoginValid.value &&
+                        viewModel.registerUIState.value.password.value == viewModel.registerUIState.value.repeatPassword.value &&
+                        viewModel.registerUIState.value.fullName.value.isNotEmpty()
+                    ){
+                        viewModel.register()
                     }
                 },
                 modifiers = Modifier

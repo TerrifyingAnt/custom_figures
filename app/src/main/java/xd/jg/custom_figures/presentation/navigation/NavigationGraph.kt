@@ -13,6 +13,7 @@ import xd.jg.custom_figures.presentation.custom_figure_detail_screen.CustomFigur
 import xd.jg.custom_figures.presentation.figure_detail_screen.FigureDetailScreen
 import xd.jg.custom_figures.presentation.model_from_photo_constructor_screen.ModelFromPhotoConstructorScreen
 import xd.jg.custom_figures.presentation.model_from_text_constructor.ModelFromTextConstructorScreen
+import xd.jg.custom_figures.presentation.profile_screen.ProfileScreen
 import xd.jg.custom_figures.presentation.register_screen.RegisterScreen
 
 @Composable
@@ -30,7 +31,7 @@ fun NavigationGraph(navController: NavHostController, onBottomVisibilityChanged:
 
         composable(BottomNavigationItems.AccountScreen.route) {
             onBottomVisibilityChanged(true)
-
+            ProfileScreen(navController)
         }
 
         composable(BottomNavigationItems.BasketScreen.route) {
@@ -41,6 +42,11 @@ fun NavigationGraph(navController: NavHostController, onBottomVisibilityChanged:
         composable(Routes.Auth.route) {
             onBottomVisibilityChanged(false)
             AuthScreen(navController)
+        }
+
+        composable(Routes.Register.route) {
+            onBottomVisibilityChanged(false)
+            RegisterScreen(navController)
         }
 
         composable(
@@ -54,11 +60,6 @@ fun NavigationGraph(navController: NavHostController, onBottomVisibilityChanged:
             if (figureModelId != null) {
                 FigureDetailScreen(navController, figureModelId)
             }
-        }
-
-        composable(Routes.Register.route) {
-            onBottomVisibilityChanged(true)
-            RegisterScreen(navController)
         }
 
 
