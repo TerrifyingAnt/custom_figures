@@ -18,6 +18,8 @@ class TokenManager @Inject constructor(
         private val Context.dataStore by preferencesDataStore(TOKEN_DATASTORE)
         private val ACCESS_TOKEN = stringPreferencesKey("access_token")
         private val REFRESH_TOKEN = stringPreferencesKey("refresh_token")
+        private val ACCESS_EXPIRES_IN = stringPreferencesKey("access_expires_in")
+        private val login = stringPreferencesKey("login")
     }
 
     suspend fun setAccessToken(accessToken: String) {
@@ -41,6 +43,18 @@ class TokenManager @Inject constructor(
     fun getRefreshToken(): Flow<String?> {
         return appContext.dataStore.data.map { tokenStore ->
             tokenStore[REFRESH_TOKEN]
+        }
+    }
+
+    suspend fun setExpiresIn(expiresIn: Int?) {
+        appContext.dataStore.edit { tokenStore ->
+            tokenStore[ACCESS_EXPIRES_IN] = expiresIn.toString()
+        }
+    }
+
+    fun getExpiresIn(): Flow<String?> {
+        return appContext.dataStore.data.map { tokenStore ->
+            tokenStore[ACCESS_EXPIRES_IN]
         }
     }
 

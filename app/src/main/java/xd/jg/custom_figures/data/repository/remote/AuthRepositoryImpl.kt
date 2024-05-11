@@ -1,7 +1,6 @@
 package xd.jg.custom_figures.data.repository.remote
 
 import xd.jg.custom_figures.data.dto.TokensDto
-import xd.jg.custom_figures.data.dto.UserInfoDto
 import xd.jg.custom_figures.data.dto.UserRegisterInfoDto
 import xd.jg.custom_figures.data.remote.BaseDataSource
 import xd.jg.custom_figures.data.remote.IAuthClient
@@ -18,10 +17,6 @@ class AuthRepositoryImpl @Inject constructor(
 
     override suspend fun register(user: UserRegisterInfoDto) {
         safeApiCall { iAuthClient.register(user) }
-    }
-
-    override suspend fun getMe(): Resource<UserInfoDto> {
-        return safeApiCall { iAuthClient.getMe() }
     }
 
 }

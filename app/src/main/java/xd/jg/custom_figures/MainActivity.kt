@@ -49,9 +49,10 @@ class MainActivity : ComponentActivity() {
                         Box(
                             modifier = Modifier.padding(paddingValues)
                         ) {
-                            NavigationGraph(navController = navController) { invisible ->
-                                buttonsVisible = invisible
-                            }
+                            NavigationGraph(navController = navController, onBottomVisibilityChanged={ invisible ->
+                                    buttonsVisible = invisible
+                                }
+                            )
                         }
                     }
                 }

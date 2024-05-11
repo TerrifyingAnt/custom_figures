@@ -25,4 +25,8 @@
     <string name="basket_string">Корзина</string>
     <string name="buy_string">Заказать!</string>
     <string name="profile_string">Профиль</string>
+    <string name="edit_string">Редактирование</string>
+    <string name="edit_name_string">Изменить имя</string>
+    <string name="edit_email_string">Изменить почту</string>
+    <string name="edit_phone_string">Изменить телефон</string>
 </resources>

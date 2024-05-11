@@ -4,10 +4,8 @@ import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
-import retrofit2.http.GET
 import retrofit2.http.POST
 import xd.jg.custom_figures.data.dto.TokensDto
-import xd.jg.custom_figures.data.dto.UserInfoDto
 import xd.jg.custom_figures.data.dto.UserRegisterInfoDto
 import xd.jg.custom_figures.utils.Constants.CLIENT_ID
 import xd.jg.custom_figures.utils.Constants.CLIENT_SECRET
@@ -24,9 +22,5 @@ interface IAuthClient {
 
     @POST("/register")
     suspend fun register(@Body user: UserRegisterInfoDto): Response<Any>
-
-    @GET("/me")
-    suspend fun getMe(): Response<UserInfoDto>
-
 
 }

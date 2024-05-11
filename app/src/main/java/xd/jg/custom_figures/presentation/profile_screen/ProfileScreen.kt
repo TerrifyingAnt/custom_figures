@@ -65,12 +65,11 @@ fun ProfileScreen(navController: NavController, viewModel: ProfileViewModel = hi
         )
         when(viewModel.profileUIState.value.userInfo.status) {
             Resource.Status.SUCCESS -> {
-                ProfileLoading()
+                ProfileContent(navController)
             }
             
             Resource.Status.LOADING -> {
-                ProfileContent(navController)
-
+                ProfileLoading()
             }
             
             Resource.Status.ERROR -> {

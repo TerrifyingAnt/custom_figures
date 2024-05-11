@@ -73,6 +73,7 @@ class RegisterViewModel @Inject constructor(
         if (response.data != null) {
             tokenManager.setAccessToken(response.data.accessToken)
             tokenManager.setRefreshToken(response.data.refreshToken)
+            tokenManager.setExpiresIn(response.data.expiresIn)
             updateUIState {
                 copy (
                     successAuth = Resource.success("Вы авторизованы!")

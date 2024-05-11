@@ -6,6 +6,7 @@ object Constants {
     /** ссылки */
     const val BASE_URL = "http://levandrovskiy.ru:8777/"
     const val BASE_MAIN_URL = "http://10.147.17.181:8090/"
+    const val BASE_MINIO_LINK = "http://10.147.17.181:9000/ch-user-data-storage"
 
     /** названия шардов*/
     const val USER_DATASTORE = "USER_DATASTORE"

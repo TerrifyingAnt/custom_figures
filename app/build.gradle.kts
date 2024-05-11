@@ -12,7 +12,7 @@ android {
 
     defaultConfig {
         applicationId = "xd.jg.custom_figures"
-        minSdk = 24
+        minSdk = 26
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
@@ -140,6 +140,9 @@ dependencies {
 
     // JsonProperties
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.17.1")
+
+    // image picker
+    implementation ("io.github.huhx:compose-image-picker:1.0.8")
 
 
 

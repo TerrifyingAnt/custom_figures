@@ -11,4 +11,6 @@ sealed class Routes(val route: String) {
     object ModelFromTextConstructorScreen : Routes("model_from_text_constructor")
 
     object CustomFigureDetailScreen : Routes("catalog_screen_custom/{figure_model_basket}")
+
+    object EditProfileScreen : Routes("edit_profile_screen?{user_email}&{user_phone}&{user_full_name}")
 }

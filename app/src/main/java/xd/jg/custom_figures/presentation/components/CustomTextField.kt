@@ -1,6 +1,5 @@
 package xd.jg.custom_figures.presentation.components
 
-import android.util.Log
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -100,7 +99,6 @@ fun CustomTextField(
             keyboardOptions = KeyboardOptions(keyboardType = keyboardType),
             visualTransformation = visualTransformation
         )
-        Log.d("XD", textValue.split("\n").toString())
     }
 }
 

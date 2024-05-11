@@ -7,13 +7,13 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import xd.jg.custom_figures.data.local.TokenManager
-import xd.jg.custom_figures.domain.remote.IAuthRepository
+import xd.jg.custom_figures.domain.remote.IProfileRepository
 import xd.jg.custom_figures.utils.Resource
 import javax.inject.Inject
 
 @HiltViewModel
 class ProfileViewModel @Inject constructor(
-    private val iAuthRepository: IAuthRepository,
+    private val iProfileRepository: IProfileRepository,
     private val tokenManager: TokenManager
 ): ViewModel() {
 
@@ -26,11 +26,18 @@ class ProfileViewModel @Inject constructor(
     }
 
     fun getMe() = viewModelScope.launch {
-        val response = iAuthRepository.getMe()
+        val response = iProfileRepository.getMe()
         if (response.data != null) {
             updateUIState {
                 copy(
                     userInfo = Resource.success(response.data)
+                )
+            }
+        }
+        else {
+            updateUIState {
+                copy(
+                    userInfo = Resource.error("")
                 )
             }
         }
