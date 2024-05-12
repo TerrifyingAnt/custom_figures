@@ -74,7 +74,7 @@ fun ProfileContent(navController: NavController, viewModel: ProfileViewModel = h
             CustomButton(
                 buttonColor = CustomPrimaryContainer,
                 buttonText = "История заказов",
-                onClick = { /*TODO*/ },
+                onClick = { navController.navigate(Routes.OrderHistoryScreen.route) },
                 modifiers = Modifier.fillMaxWidth()
             )
         }

@@ -1,6 +1,5 @@
 package xd.jg.custom_figures.presentation.basket_screen
 
-import android.util.Log
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
@@ -16,6 +15,7 @@ import xd.jg.custom_figures.domain.local.IBasketRepository
 import xd.jg.custom_figures.domain.remote.IFigureRepository
 import xd.jg.custom_figures.domain.remote.IOrderRepository
 import xd.jg.custom_figures.utils.Resource
+import xd.jg.custom_figures.utils.toOrderItemDto
 import javax.inject.Inject
 
 @HiltViewModel
@@ -63,7 +63,6 @@ class BasketViewModel @Inject constructor(
     /** увеличение количества фигурок в корзине*/
     fun addFigureCount(figureId: Int) = viewModelScope.launch {
         val figure = basketUIState.value.basketFigures.value?.find {it.id == figureId}
-        Log.d("TF", figure.toString())
         figure?.count = figure?.count?.plus(1) ?: 1
         val newListFigures = mutableListOf<BasketItemEntity>()
         basketUIState.value.basketFigures.value?.forEach {
@@ -115,7 +114,8 @@ class BasketViewModel @Inject constructor(
     /** создать заказ */
     fun createOrder() = viewModelScope.launch {
         val listOfItems = _basketUIState.value.basketFigures.value ?: return@launch
-        iOrderRepository.createOrder(listOfItems)
+        val orderItemsList = listOfItems.map {it.toOrderItemDto()}
+        iOrderRepository.createOrder(orderItemsList)
         db.deleteAll()
         updateUIState {
             copy(

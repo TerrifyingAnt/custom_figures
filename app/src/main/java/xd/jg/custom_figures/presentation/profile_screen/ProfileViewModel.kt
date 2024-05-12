@@ -43,6 +43,7 @@ class ProfileViewModel @Inject constructor(
         }
     }
 
+
     fun exitProfile() = viewModelScope.launch {
         tokenManager.setAccessToken("")
         tokenManager.setRefreshToken("")

@@ -35,7 +35,7 @@ class AuthInterceptor @Inject constructor(
     private fun isUrlExcluded(url: HttpUrl): Boolean {
         // Add your logic to check if the URL should be excluded
         // For example, you can check if the URL starts with a specific path
-        val excludedPaths = listOf("/ch-user-data-storage")
+        val excludedPaths = listOf("/ch-user-data-storage", "/ch-main-storage", "/login", "/register")
         return excludedPaths.any { url.encodedPath.startsWith(it) }
     }
 }

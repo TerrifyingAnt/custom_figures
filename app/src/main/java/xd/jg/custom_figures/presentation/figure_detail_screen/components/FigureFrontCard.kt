@@ -39,7 +39,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import coil.annotation.ExperimentalCoilApi
 import coil.compose.rememberImagePainter
 import com.tbuonomo.viewpagerdotsindicator.compose.DotsIndicator
 import com.tbuonomo.viewpagerdotsindicator.compose.model.DotGraphic
@@ -58,7 +57,7 @@ import xd.jg.custom_figures.ui.theme.unboundedBoldFont
 import xd.jg.custom_figures.utils.Constants
 import xd.jg.custom_figures.utils.toTagFilter
 
-@OptIn(ExperimentalFoundationApi::class, ExperimentalCoilApi::class)
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun FigureFrontCard(figure: FigureDto, viewModel: FigureDetailViewModel = hiltViewModel()) {
     Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.fillMaxSize()) {

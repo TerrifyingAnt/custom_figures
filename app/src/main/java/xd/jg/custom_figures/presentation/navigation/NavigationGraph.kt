@@ -16,6 +16,7 @@ import xd.jg.custom_figures.presentation.edit_profile_screen.EditProfileViewMode
 import xd.jg.custom_figures.presentation.figure_detail_screen.FigureDetailScreen
 import xd.jg.custom_figures.presentation.model_from_photo_constructor_screen.ModelFromPhotoConstructorScreen
 import xd.jg.custom_figures.presentation.model_from_text_constructor.ModelFromTextConstructorScreen
+import xd.jg.custom_figures.presentation.order_history_screen.OrderHistoryScreen
 import xd.jg.custom_figures.presentation.profile_screen.ProfileScreen
 import xd.jg.custom_figures.presentation.register_screen.RegisterScreen
 
@@ -59,7 +60,7 @@ fun NavigationGraph(navController: NavHostController, onBottomVisibilityChanged:
             })
         ) {backStackEntry ->
             val figureModelId = backStackEntry.arguments?.getInt("figure_model")
-            onBottomVisibilityChanged(true)
+            onBottomVisibilityChanged(false)
             if (figureModelId != null) {
                 FigureDetailScreen(navController, figureModelId)
             }
@@ -97,6 +98,11 @@ fun NavigationGraph(navController: NavHostController, onBottomVisibilityChanged:
             val userPhone = backStackEntry.arguments?.getString("user_phone") ?: return@composable
             onBottomVisibilityChanged(false)
             EditProfileScreen(navController = navController, userEmail = userEmail, userName = userName, userPhone = userPhone)
+        }
+
+        composable(Routes.OrderHistoryScreen.route) {
+            onBottomVisibilityChanged(false)
+            OrderHistoryScreen(navController)
         }
     }
 

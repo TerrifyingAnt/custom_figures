@@ -14,7 +14,7 @@ object Constants {
 
     /** авторизация через кейклок*/
     const val AUTH_LINK = "http://localhost:8081/realms/users/protocol/openid-connect/token"
-    const val CLIENT_SECRET = "pzbwVDf221bh14QmIVlSVahp9pc53Wbg"
+    const val CLIENT_SECRET = "R8T3vgwpx9DceXXLW1TaNQ1mgwoP3UXr"
 
     /** ui`ные константы */
     const val ROUNDED = 16

@@ -2,6 +2,7 @@ package xd.jg.custom_figures.utils
 
 import androidx.compose.ui.geometry.Offset
 import xd.jg.custom_figures.data.dto.FigureDto
+import xd.jg.custom_figures.data.dto.OrderItemDto
 import xd.jg.custom_figures.data.dto.TagDto
 import xd.jg.custom_figures.data.dto.TagTitleDto
 import xd.jg.custom_figures.data.local.entity.BasketItemEntity
@@ -38,6 +39,24 @@ fun FigureDto.toBasketItemEntity(): BasketItemEntity {
         type = FigureType.CUSTOM_DEFAULT.ordinal,
         figureId = this.id,
         description = this.description,
+        title = this.title,
         count = 1,
         price = this.price)
+}
+
+fun BasketItemEntity.toOrderItemDto(): OrderItemDto {
+    return OrderItemDto(
+        this.type,
+        this.figureId,
+        this.description,
+        this.references,
+        this.movable,
+        this.colored,
+        this.hairLink,
+        this.eyeLink,
+        this.bodyLink,
+        this.count,
+        this.price,
+        this.title
+    )
 }
