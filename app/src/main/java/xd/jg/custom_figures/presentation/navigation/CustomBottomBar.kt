@@ -25,7 +25,7 @@ fun CustomBottomBar(
     val screens = listOf(
         BottomNavigationItems.CatalogScreen,
         BottomNavigationItems.BasketScreen,
-        BottomNavigationItems.ChatScreen,
+        BottomNavigationItems.DialogsScreen,
         BottomNavigationItems.AccountScreen
     )
 

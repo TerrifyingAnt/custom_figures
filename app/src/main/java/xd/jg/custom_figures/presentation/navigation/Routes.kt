@@ -12,7 +12,10 @@ sealed class Routes(val route: String) {
 
     object CustomFigureDetailScreen : Routes("catalog_screen_custom/{figure_model_basket}")
 
-    object EditProfileScreen : Routes("edit_profile_screen?{user_email}&{user_phone}&{user_full_name}")
+    object EditProfileScreen :
+        Routes("edit_profile_screen?{user_email}&{user_phone}&{user_full_name}")
 
     object OrderHistoryScreen : Routes("order_history_screen")
+
+    object ChatScreen : Routes("dialogs_screen/{chat_id}")
 }

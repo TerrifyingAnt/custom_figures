@@ -27,7 +27,7 @@ fun CustomFigureDetailScreen(
             if (figure?.type == FigureType.CUSTOM_BY_PHOTO.ordinal) {
                 //PhotoFigureDetails(navController, figure)
                 /** TODO - жесть, потом переделать*/
-                Toast.makeText(LocalContext.current, "Превью не загрузилос", Toast.LENGTH_SHORT).show()
+                Toast.makeText(LocalContext.current, "Превью не загрузилось", Toast.LENGTH_SHORT).show()
             }
         }
     }

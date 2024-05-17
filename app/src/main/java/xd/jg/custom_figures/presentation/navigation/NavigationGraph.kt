@@ -10,7 +10,9 @@ import androidx.navigation.navArgument
 import xd.jg.custom_figures.presentation.auth_screen.AuthScreen
 import xd.jg.custom_figures.presentation.basket_screen.BasketScreen
 import xd.jg.custom_figures.presentation.catalog_screen.CatalogScreen
+import xd.jg.custom_figures.presentation.chat_screen.ChatScreen
 import xd.jg.custom_figures.presentation.custom_figure_detail_screen.CustomFigureDetailScreen
+import xd.jg.custom_figures.presentation.dialogs_screen.DialogsScreen
 import xd.jg.custom_figures.presentation.edit_profile_screen.EditProfileScreen
 import xd.jg.custom_figures.presentation.edit_profile_screen.EditProfileViewModel
 import xd.jg.custom_figures.presentation.figure_detail_screen.FigureDetailScreen
@@ -28,9 +30,9 @@ fun NavigationGraph(navController: NavHostController, onBottomVisibilityChanged:
             CatalogScreen(navController)
         }
 
-        composable(BottomNavigationItems.ChatScreen.route) {
-            navController.popBackStack()
+        composable(BottomNavigationItems.DialogsScreen.route) {
             onBottomVisibilityChanged(true)
+            DialogsScreen(navController)
         }
 
         composable(BottomNavigationItems.AccountScreen.route) {
@@ -103,6 +105,19 @@ fun NavigationGraph(navController: NavHostController, onBottomVisibilityChanged:
         composable(Routes.OrderHistoryScreen.route) {
             onBottomVisibilityChanged(false)
             OrderHistoryScreen(navController)
+        }
+
+        composable(
+            route = Routes.ChatScreen.route,
+            arguments = listOf(navArgument("chat_id") {
+                type = NavType.IntType
+            })
+        ) {backStackEntry ->
+            val chatId = backStackEntry.arguments?.getInt("chat_id")
+            onBottomVisibilityChanged(false)
+            if (chatId != null) {
+                ChatScreen(navController, chatId)
+            }
         }
     }
 

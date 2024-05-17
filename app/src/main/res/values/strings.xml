@@ -30,4 +30,5 @@
     <string name="edit_email_string">Изменить почту</string>
     <string name="edit_phone_string">Изменить телефон</string>
     <string name="history_string">История</string>
+    <string name="dialogs_string">Диалоги</string>
 </resources>

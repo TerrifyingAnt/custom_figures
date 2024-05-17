@@ -21,8 +21,8 @@ sealed class BottomNavigationItems(
         icon = Icons.Default.ShoppingCart
     )
 
-    object ChatScreen : BottomNavigationItems (
-        route = "chat_screen",
+    object DialogsScreen : BottomNavigationItems (
+        route = "dialogs_screen",
         icon = Icons.Default.ChatBubble
     )
 
