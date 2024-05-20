@@ -144,6 +144,9 @@ dependencies {
     // image picker
     implementation ("io.github.huhx:compose-image-picker:1.0.8")
 
+    implementation ("io.mockk:mockk:1.9.3")
+    // https://mvnrepository.com/artifact/org.mockito.kotlin/mockito-kotlin
+    implementation("org.mockito.kotlin:mockito-kotlin:5.3.1")
 
 
     testImplementation("junit:junit:4.13.2")
