@@ -99,7 +99,7 @@ fun ModelFromPhotoConstructorScreen(
                 },
                 actions = { when {
                     viewModel.modelFromPhotoConstructorUIState.value.figure.status == Resource.Status.SUCCESS ->
-                        MenuButton (scope, scaffoldState)
+                        MenuButton(scope, scaffoldState)
                     }
                 }
             )

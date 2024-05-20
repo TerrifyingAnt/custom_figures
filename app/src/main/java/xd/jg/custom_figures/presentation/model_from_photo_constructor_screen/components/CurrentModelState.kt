@@ -1,6 +1,7 @@
 package xd.jg.custom_figures.presentation.model_from_photo_constructor_screen.components
 
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
@@ -11,7 +12,10 @@ import xd.jg.custom_figures.presentation.model_from_photo_constructor_screen.mod
 
 @Composable
 fun CurrentModelState(currentModelState: List<PartModelData>) {
-    LazyRow() {
+    LazyRow(modifier = Modifier.fillMaxWidth()) {
+        item {
+            Spacer(modifier = Modifier.size(10.dp))
+        }
         items(currentModelState) {currentPart ->
             PartModelViewer(currentPart)
         }

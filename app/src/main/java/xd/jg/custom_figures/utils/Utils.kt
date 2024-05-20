@@ -1,12 +1,19 @@
 package xd.jg.custom_figures.utils
 
+import androidx.compose.foundation.layout.size
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Man
+import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import xd.jg.custom_figures.data.dto.DialogDto
 import xd.jg.custom_figures.data.dto.MessageDto
 import xd.jg.custom_figures.presentation.model_from_photo_constructor_screen.ModelFromPhotoConstructorViewModel
 import xd.jg.custom_figures.presentation.model_from_photo_constructor_screen.models.PartModelData
+import xd.jg.custom_figures.ui.theme.CustomSecondary
 
 object Utils {
     @Composable
@@ -15,20 +22,36 @@ object Utils {
     ): List<PartModelData> {
         return listOf(
             PartModelData(
-                "https://i.pinimg.com/736x/f7/f9/2d/f7f92d67e7f9b3fd39c64443b7d5f61f.jpg",
+                Color(0xffffe69e),
                 "Волосы",
                 modelFromPhotoConstructorViewModel.modelFromPhotoConstructorUIState.value.hair
             ),
             PartModelData(
-                "https://yt3.googleusercontent.com/Zy2eVPmuXRp1LGRdkecGrk3VOFfSQiGY7JZuCGXqTayYjhyY4-_tL1FsBBPDNiEaPZ2UXKLmnBk=s900-c-k-c0x00ffffff-no-rj",
-                "Глазки",
+                Color(0xff42AAFF),
+                "Глаза",
                 modelFromPhotoConstructorViewModel.modelFromPhotoConstructorUIState.value.eyes
             ),
             PartModelData(
-                "https://i.pinimg.com/originals/19/41/f6/1941f69eb904fef2853b700fa9cd988f.jpg",
-                "Тельце",
+                Color(0xff8d5524),
+                "Цвет кожи",
                 modelFromPhotoConstructorViewModel.modelFromPhotoConstructorUIState.value.body
+            ),
+            PartModelData(
+                Color(0xff0000FF),
+                "Пол",
+                modelFromPhotoConstructorViewModel.modelFromPhotoConstructorUIState.value.eyes
             )
+        )
+    }
+
+    @Composable
+    fun xd() {
+        Icon(
+            Icons.Default.Man,
+            contentDescription = "go back",
+            tint = CustomSecondary,
+            modifier = Modifier
+                .size(50.dp)
         )
     }
 
